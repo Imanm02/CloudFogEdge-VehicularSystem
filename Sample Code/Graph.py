@@ -1,6 +1,6 @@
 
 """
-    Class represeting the Mobility Graph! This Graph should update the dictionary based on the
+    Class representing the Mobility Graph! This Graph should update the dictionary based on the
     info from the sumo xml parser!
 """
 
