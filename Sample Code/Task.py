@@ -4,8 +4,10 @@
 """
 
 class Task:
-    def __init__(self):
-        self.needed_freq = 0
-        self.max_time = 0
-        self.data = 0
+    def __init__(self, needed_freq, max_time, data, deadline):
+        self.needed_freq = needed_freq
+        self.max_time = max_time
+        self.data = data
+        self.deadline = deadline
+        self.assigned_node = None
         
