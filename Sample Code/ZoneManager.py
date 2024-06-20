@@ -19,5 +19,3 @@ class ServiceZone:
         """
         distance = math.sqrt((point_x - self.x) ** 2 + (point_y - self.y) ** 2)
         return distance <= self.coverage_radius
-
-

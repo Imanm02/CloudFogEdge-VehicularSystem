@@ -14,4 +14,3 @@ class UsersLayer:
     def add_node(self, node):
         node.layer = Layer.Users
         self.nodes.append(node)
-

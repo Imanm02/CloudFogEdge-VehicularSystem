@@ -10,4 +10,3 @@ class Task:
         self.data = data
         self.deadline = deadline
         self.assigned_node = None
-        
