@@ -1,36 +1,32 @@
-
 """
     Class representing the Mobility Graph! This Graph should update the dictionary based on the
     info from the sumo xml parser!
 """
+from SumoXMLParser import SumoXMLParser
+
 
 class MobilityGraph:
-    def __init__(self) -> None:
+    def __init__(self, xml_path) -> None:
         self.nodes = []
         self.graph = {}
+        self.xml_path = xml_path
+        self.current_time = 0
+        self.init_graph()
 
+    def init_graph(self):
+        parser = SumoXMLParser(filepath="fcd_output.xml")
+        self.graph = parser.parse()
+        self.current_time = min(self.graph.keys())
+        self.nodes = self.graph[self.current_time]
 
-    def add_node(self, node):
-        self.nodes.append(node)
-        self.graph[node] = []
+    def update_graph(self):
+        self.current_time += 1
+        if self.current_time in self.graph:
+            self.nodes = self.graph[self.current_time]
+        else:
+            self.nodes = []
+        return self.nodes
 
-    def add_edge(self, node1, node2, weight):
-        self.graph[node1].append((node2, weight))
-        self.graph[node2].append((node1, weight))
+    def get_nodes(self):
+        return self.nodes
 
-    def get_nearest_node(self, node, layer):
-        nearest_node = None
-        min_distance = float('inf')
-        for n in self.nodes:
-            if n.layer == layer:
-                distance = node.distance(n)
-                if distance < min_distance:
-                    min_distance = distance
-                    nearest_node = n
-        return nearest_node
-
-    def get_edge_weight(self, node1, node2):
-        for n, w in self.graph[node1]:
-            if n == node2:
-                return w
-        return None

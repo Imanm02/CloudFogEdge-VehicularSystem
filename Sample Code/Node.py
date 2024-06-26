@@ -3,6 +3,8 @@
     properly!
 """
 import math
+import random
+from Task import Task
 
 
 class Layer:
@@ -12,13 +14,14 @@ class Layer:
 
 
 class Node:
-    def __init__(self, id, layer, cpu_freq=2, x=0, y=0, coverage_radius=0):
+    def __init__(self, id, layer, cpu_freq=2, x=0, y=0, coverage_radius=0, speed=0, angle=-1):
         self.id = id
         self.layer = layer
         self.cpu_freq = cpu_freq
         self.x = x
         self.y = y
         self.coverage_radius = coverage_radius
+        self.angle = angle
         self.tasks = []
 
     def distance(self, node):
@@ -26,3 +29,21 @@ class Node:
 
     def append_task(self, task):
         self.tasks.append(task)
+
+    def generate_task(self, creation_time):
+        task = Task(
+            name="T" + str(random.randint(1, 100)),
+            cpu_cycles=random.randint(1, 10),
+            size=random.randint(1, 10),
+            deadline=random.randint(1, 10),
+            owner_node=self.id,
+            creation_time=creation_time
+        )
+        return task
+
+    def get_ongoing_tasks(self, current_time):
+        output = []
+        for task in self.tasks:
+            if task.creation_time + task.deadline <= current_time and task.assigned_node == self:
+                output.append(task)
+        return output

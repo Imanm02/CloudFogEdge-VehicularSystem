@@ -7,44 +7,30 @@ from Node import Layer
     this class!
 """
 
+
 class Topology:
-    def __init__(self, timeslot_length = 1) -> None:
-        self.user_layer = None
-        self.fog_layer = None
-        self.cloud_layer = None
-        self.graph = None
+    def __init__(self, user_layer, fog_layer, cloud_layer, graph, timeslot_length=1):
+        self.user_layer = user_layer
+        self.fog_layer = fog_layer
+        self.cloud_layer = cloud_layer
+        self.graph = graph
         self.TIMESLOT_LENGTH = timeslot_length
 
-    def add_user(self, user):
-        self.user_layer.add_node(user)
-
-    def add_fog_node(self, node):
-        self.fog_layer.add_node(node)
-
-    def add_cloud_node(self, node):
-        self.cloud_layer.add_node(node)
-
-    def add_edge(self, node1, node2, weight):
-        self.graph.add_edge(node1, node2, weight)
-
-    def find_assignee(self, user_node, task):
-        fog_node = self.graph.get_nearest_node(user_node, Layer.Fog)
-        cloud_node = self.graph.get_nearest_node(fog_node, Layer.Cloud)
-        fog_distance = self.graph.get_edge_weight(user_node, fog_node)
-        cloud_distance = self.graph.get_edge_weight(fog_node, cloud_node)
-
-        task_user_time = task.cpu_cycles / user_node.cpu_freq
-        task_fog_time = task.cpu_cycles / fog_node.cpu_freq + task.data / fog_distance
-        task_cloud_time = task.cpu_cycles / cloud_node.cpu_freq + task.data / cloud_distance
-
-        if task_user_time < task_fog_time and task_user_time < task_cloud_time:
-            return user_node
-        elif task_fog_time < task_user_time and task_fog_time < task_cloud_time:
-            return fog_node
-        else:
-            return cloud_node
+    def update_topology(self):
+        self.graph.update_graph()
 
     def assign_task(self, user_node, task):
         assignee = self.find_assignee(user_node, task)
-        task.assigned_node = assignee
+        task.set_assignee(assignee)
         assignee.append_task(task)
+
+    def find_assignee(self, user_node, task):
+        # todo complete the algorithm. its so simple now that it just assigns the task to the first node in range
+        current_time = self.graph.get_current_time()
+        x, y = user_node.x, user_node.y
+
+        for node in self.fog_layer.get_nodes():
+            if node.is_in_range(x, y):
+                return node
+        for node in self.cloud_layer.get_nodes():
+            return node
