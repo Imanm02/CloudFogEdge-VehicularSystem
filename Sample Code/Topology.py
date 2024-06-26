@@ -18,6 +18,18 @@ class Topology:
 
     def update_topology(self):
         self.graph.update_graph()
+        migrations = self.check_migrations()
+        for task in migrations:
+            # todo complete it!
+            pass
+
+    def check_migrations(self):
+        migrations = []
+        for node in self.fog_layer.get_nodes():
+            for task in node.get_tasks():
+                if not node.is_in_range(task.creator.x, task.creator.y):
+                    migrations.append(task)
+        return migrations
 
     def assign_task(self, user_node, task):
         assignee = self.find_assignee(user_node, task)
