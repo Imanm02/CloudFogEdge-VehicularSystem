@@ -26,11 +26,12 @@ class Topology:
 
     def find_assignee(self, user_node, task):
         # todo complete the algorithm. its so simple now that it just assigns the task to the first node in range
+        #  that is not busy
         current_time = self.graph.get_current_time()
         x, y = user_node.x, user_node.y
 
         for node in self.fog_layer.get_nodes():
-            if node.is_in_range(x, y):
+            if node.cpu_freq >= task.needed_freq and node.is_in_range(x, y) and node.is_free(current_time):
                 return node
         for node in self.cloud_layer.get_nodes():
             return node
