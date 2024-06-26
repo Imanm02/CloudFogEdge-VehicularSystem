@@ -20,7 +20,8 @@ topology = Topology(user_layer, fog_layer, cloud_layer, graph)
 
 for i in range(10):
     for node in user_layer.get_nodes():
-        task = node.generate_task()
+        time = graph.current_time
+        task = node.generate_task(time)
         topology.assign_task(node, task)
     topology.update_topology()
     print("Iteration", i)

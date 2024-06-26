@@ -47,3 +47,6 @@ class Node:
             if task.creation_time + task.deadline <= current_time and task.assigned_node == self:
                 output.append(task)
         return output
+
+    def is_in_range(self, x, y):
+        return self.distance(Node(-1, Layer.Users, x, y)) <= self.coverage_radius

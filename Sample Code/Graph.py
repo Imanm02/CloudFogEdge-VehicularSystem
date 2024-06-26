@@ -30,3 +30,5 @@ class MobilityGraph:
     def get_nodes(self):
         return self.nodes
 
+    def get_current_time(self):
+        return self.current_time
