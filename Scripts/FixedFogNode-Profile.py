@@ -23,7 +23,7 @@ def generate_fixed_fog_nodes(num_nodes, filename, power_range=(10, 100), positio
         f.write(pretty_xml_as_string)
 
 num_nodes = 10
-filename = 'D:\\fixed_fog_nodes_data.xml'
+filename = 'D:\\fixedFogNodes_data.xml'
 
 generate_fixed_fog_nodes(num_nodes, filename, power_range=(10, 100), position_range=(0, 1000))
 print(f"Data successfully saved to {filename}.")

@@ -72,7 +72,7 @@ def generate_fog_node_data(num_timesteps, num_nodes, filename,
 
 num_timesteps = 100
 num_nodes = 100
-filename = 'D:\\fogNodes_data.xml'
+filename = 'D:\\mobileFogNodes_data.xml'
 
 generate_fog_node_data(num_timesteps, num_nodes, filename,
                        speed_change_range=(-5, 5), angle_change_range=(-20, 20),

@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<fcd-export>
+  <node id="fixedFog1" x="628.85" y="696.88" type="fixedFog" power="96.73" lane="5"/>
+  <node id="fixedFog2" x="23.44" y="539.81" type="fixedFog" power="37.94" lane="4"/>
+  <node id="fixedFog3" x="645.15" y="682.59" type="fixedFog" power="82.17" lane="6"/>
+  <node id="fixedFog4" x="786.99" y="806.92" type="fixedFog" power="27.06" lane="4"/>
+  <node id="fixedFog5" x="804.44" y="350.04" type="fixedFog" power="80.20" lane="6"/>
+  <node id="fixedFog6" x="87.37" y="684.76" type="fixedFog" power="34.43" lane="4"/>
+  <node id="fixedFog7" x="361.98" y="694.38" type="fixedFog" power="66.14" lane="5"/>
+  <node id="fixedFog8" x="261.94" y="774.29" type="fixedFog" power="57.95" lane="5"/>
+  <node id="fixedFog9" x="317.46" y="533.83" type="fixedFog" power="44.48" lane="5"/>
+  <node id="fixedFog10" x="450.72" y="236.55" type="fixedFog" power="74.48" lane="5"/>
+</fcd-export>
