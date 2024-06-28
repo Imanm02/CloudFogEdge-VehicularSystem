@@ -2,6 +2,7 @@ import math
 from Node import Node
 from Clock import Clock
 
+
 class ServiceZone:
     def __init__(self, x, y, coverage_radius, name):
         """
@@ -40,14 +41,23 @@ class ServiceZone:
                 if distance < min_distance:
                     min_distance = distance
                     assignee = node
-        # if assignee is None:
-        #     assignee = self.cloud_layer.get_nodes()[0] todo move to topology
         return assignee
 
     def create_offer(self, node, task):
         if not self.is_within_coverage(node.x, node.y):
             return None
-        return self.find_assignee(node, task)
+        fog = self.find_assignee(node, task)
+        if fog is None:
+            return None
+        offer = (self.name, fog)
+        return offer
+
+    def accept_offer(self, user_node, task):
+        assignee = self.find_assignee(user_node, task)
+        if assignee is not None:
+            assignee.append_task(task)
+            return True
+        return False
 
 
 class ZoneBroadcaster:
@@ -74,5 +84,10 @@ class ZoneBroadcaster:
             offer = zone.create_offer(user, task)
             if offer:
                 offers.append(offer)
-
         return offers
+
+    def get_zone(self, zone_name):
+        for zone in self.zones:
+            if zone.name == zone_name:
+                return zone
+        return None

@@ -45,24 +45,23 @@ class Topology:
 
     def assign_task(self, user_node, task, zone_broadcast: ZoneBroadcaster):
         offers = zone_broadcast.broadcast(user_node, task)
-        # todo
-        # assignee = self.find_assignee(user_node, task, zone.fog_nodes)
-        # task.set_assignee(assignee)
-        # assignee.append_task(task)
 
-    # def find_assignee(self, user_node, task, fog_nodes):
-    #     # todo complete the algorithm. its so simple now (greedy)
-    #     current_time = self.graph.get_current_time()
-    #     x, y = user_node.x, user_node.y
-    #
-    #     min_distance = float('inf')
-    #     assignee = None
-    #     for node in fog_nodes:
-    #         if node.cpu_freq >= task.needed_freq and node.is_in_range(x, y) and node.is_free(current_time):
-    #             distance = node.distance(user_node)
-    #             if distance < min_distance:
-    #                 min_distance = distance
-    #                 assignee = node
-    #     if assignee is None:
-    #         assignee = self.cloud_layer.get_nodes()[0]
-    #     return assignee
+        is_successful = False
+        while not is_successful and len(offers) > 0:
+            min_distance = float('inf')
+            best_zone = None
+            for offer in offers:
+                zone_name, fog_node = offer
+                zone = zone_broadcast.get_zone(zone_name)
+                distance = fog_node.distance(user_node)
+                if distance < min_distance:
+                    min_distance = distance
+                    best_zone = zone
+            # accept offer
+            is_successful = best_zone.accept_offer(user_node, task)
+            if not is_successful:
+                offers.remove((best_zone.name, best_zone.assignee))
+
+        if len(offers) == 0:
+            assignee = self.cloud_layer.get_nodes()[0]
+            assignee.append_task(task)

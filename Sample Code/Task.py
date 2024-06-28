@@ -20,3 +20,7 @@ class Task:
 
     def set_assignee(self, node):
         self.assigned_node = node
+
+
+# class TaskProfile:
+#     #todo implement
