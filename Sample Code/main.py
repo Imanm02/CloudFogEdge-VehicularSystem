@@ -7,6 +7,7 @@ from Graph import MobilityGraph
 from ZoneManager import ZoneBroadcaster
 from Clock import Clock
 from ZoneManager import ServiceZone
+from Evaluater import Evaluater
 
 global user_layer, fog_layer, cloud_layer, zone_broadcaster, topology
 
@@ -56,7 +57,9 @@ def log_current_state():
 
 
 init_system()
-steps = 10
+steps = 20
 for i in range(steps):
     print("Iteration", i)
     step()
+
+Evaluater.log_evaluation()

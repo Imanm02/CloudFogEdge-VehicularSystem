@@ -3,6 +3,7 @@ import Graph
 from ZoneManager import *
 from Node import Layer
 from Clock import Clock
+from Evaluater import Evaluater
 
 """
     Topology class containing the three layers! The main algorithm should be implemented as a method of 
@@ -26,9 +27,9 @@ class Topology:
         self.graph.update_graph()
         current_time = Clock.time
         migrations = self.check_migrations(current_time)
-        for task in migrations:
-            # todo complete it!
-            pass
+        for migration in migrations:
+            print(f"Migration of task {migration.id} from {migration.creator.id} to {migration.destination.id}")
+            Evaluater.migrations_count += 1
 
     def check_migrations(self, current_time):
         migrations = []
