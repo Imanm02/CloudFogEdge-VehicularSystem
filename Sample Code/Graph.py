@@ -4,6 +4,7 @@
 """
 from SumoXMLParser import SumoXMLParser
 from Clock import Clock
+from Node import Layer
 
 
 class MobilityGraph:
@@ -22,13 +23,22 @@ class MobilityGraph:
     def update_graph(self):
         Clock.time += 1
         if Clock.time in self.graph:
-            self.nodes = self.graph[Clock.time]
+            new_nodes = self.graph[Clock.time]
+            for node in self.nodes:
+                new_node = next((n for n in new_nodes if n.id == node.id), None)
+                if new_node is not None:
+                    node.x = new_node.x
+                    node.y = new_node.y
+            self.nodes = new_nodes
         else:
             self.nodes = []
         return self.nodes
 
-    def get_nodes(self):
-        return self.nodes
+    def get_user_nodes(self):
+        return [node for node in self.nodes if node.layer == Layer.Users]
+
+    def get_moving_fog_nodes(self):
+        return [node for node in self.nodes if node.layer == Layer.Fog]
 
     def get_node(self, node_id):
         for node in self.nodes:

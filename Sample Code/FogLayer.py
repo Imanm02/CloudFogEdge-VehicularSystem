@@ -5,11 +5,9 @@ from Node import Layer
 
 
 class FogLayer:
-    def __init__(self) -> None:
-        self.nodes = []
-
-    def has_node(self, node):
-        return node in self.nodes
+    def __init__(self, graph) -> None:
+        self.graph = graph
+        self.nodes = self.graph.get_moving_fog_nodes()
 
     def add_node(self, node):
         node.layer = Layer.Fog

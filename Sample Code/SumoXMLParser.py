@@ -3,6 +3,7 @@
 """
 import xml.etree.ElementTree as ET
 import Node
+from Config import Config
 
 
 class SumoXMLParser:
@@ -24,5 +25,17 @@ class SumoXMLParser:
                 angle = float(vehicle.get('angle'))
                 if time not in vehicles:
                     vehicles[time] = []
-                vehicles[time].append(Node.Node(vehicle_id, Node.Layer.Users, x=x, y=y, speed=speed, angle=angle))
+                type = vehicle.get('type')
+                if type == 'fog':
+                    vehicles[time].append(Node.Node(vehicle_id, Node.Layer.Fog, x=x, y=y, speed=speed, angle=angle))
+                else:
+                    vehicles[time].append(Node.Node(
+                        id=vehicle_id,
+                        layer=Node.Layer.Users,
+                        x=x,
+                        y=y,
+                        speed=speed,
+                        angle=angle,
+                        coverage_radius=Config.fog_coverage_radius
+                    ))
         return vehicles

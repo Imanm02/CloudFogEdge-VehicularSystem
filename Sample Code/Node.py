@@ -38,7 +38,7 @@ class Node:
 
     def generate_task(self, creation_time):
         task = Task(
-            name="T" + str(random.randint(1, 100)),
+            name="T" + str(random.randint(1, 200)),
             cpu_cycles=random.randint(1, 10),
             size=random.randint(1, 10),
             deadline=random.randint(1, 10),

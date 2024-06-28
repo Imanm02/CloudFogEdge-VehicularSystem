@@ -11,4 +11,4 @@ class UsersLayer:
         self.graph = graph
 
     def get_nodes(self):
-        return self.graph.get_nodes()
+        return self.graph.get_user_nodes()

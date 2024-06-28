@@ -61,7 +61,6 @@ class ServiceZone:
         return False
 
     def update(self, topology):
-        # todo check if your fog nodes are still in your zone (mobility of fog nodes)
         for fog_node in self.fog_nodes:
             for task in fog_node.tasks:
                 if fog_node.is_done(task):
@@ -75,6 +74,12 @@ class ServiceZone:
                         print(
                             f"The result of task {task.name} is sent to zone {nearest_zone.name} from zone {self.name}")
                         nearest_zone.send_task_result_to_owner(task, topology)
+
+        for fog_node in self.fog_nodes:
+            if not self.is_within_coverage(fog_node.x, fog_node.y):
+                self.fog_nodes.remove(fog_node)
+                topology.assign_fog_nodes_to_zones(fog_node)
+                print(f"The moving fog node {fog_node.id} is now out of zone {self.name}")
 
     def send_task_result_to_owner(self, task: Task, topology):
         owner_id = task.creator.id

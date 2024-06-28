@@ -24,7 +24,6 @@ class Topology:
         for zone_manager in self.zones:
             zone_manager.update(self)
 
-
     def assign_fog_nodes_to_zones(self, fog_node):
         for zone in self.zones:
             if zone.is_within_coverage(fog_node.x, fog_node.y):
