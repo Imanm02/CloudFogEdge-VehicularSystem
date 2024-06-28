@@ -12,7 +12,7 @@ for i in range(5):
 cloud_layer = CloudLayer()
 cloud_layer.add_node(Node(0, Layer.Cloud, cpu_freq=2, x=0, y=0, coverage_radius=50))
 
-graph = MobilityGraph(xml_path="fcd_output.xml")
+graph = MobilityGraph(xml_path="Sample Code/fcd_output.xml")
 user_layer = UsersLayer(graph)
 
 topology = Topology(user_layer, fog_layer, cloud_layer, graph)
