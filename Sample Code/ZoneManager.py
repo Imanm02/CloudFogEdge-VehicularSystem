@@ -2,6 +2,7 @@ import math
 from Clock import Clock
 from Task import Task
 from Evaluater import Evaluator
+from Node import Node
 
 
 class ServiceZone:
@@ -37,7 +38,7 @@ class ServiceZone:
         min_distance = float('inf')
         assignee = None
         for node in self.fog_nodes:
-            if node.cpu_freq >= task.needed_freq and node.is_in_range(x, y) and node.is_free(current_time):
+            if node.cpu_freq >= task.needed_freq and node.is_in_range(x, y) and node.is_free(task.needed_freq):
                 distance = node.distance(user_node)
                 if distance < min_distance:
                     min_distance = distance
@@ -54,9 +55,10 @@ class ServiceZone:
         return offer
 
     def accept_offer(self, user_node, task):
-        assignee = self.find_assignee(user_node, task)
+        assignee: Node = self.find_assignee(user_node, task)
         if assignee is not None:
             assignee.append_task(task)
+            assignee.cpu_freq -= task.needed_freq
             return True
         return False
 
@@ -65,6 +67,7 @@ class ServiceZone:
             for task in fog_node.tasks:
                 if fog_node.is_done(task):
                     fog_node.remove_task(task)
+                    fog_node.cpu_freq += task.needed_freq
                     creator = topology.get_node(task.creator.id)
                     nearest_zone = topology.get_nearest_zone(creator.x, creator.y)
                     if nearest_zone == self:
@@ -96,16 +99,23 @@ class ZoneBroadcaster:
     def set_zones(self, zones):
         self.zones = zones
 
-    def broadcast(self, user, task):
-        offers = []
-        for zone in self.zones:
-            offer = zone.create_offer(user, task)
-            if offer:
-                offers.append(offer)
-        return offers
-
     def get_zone(self, zone_name):
         for zone in self.zones:
             if zone.name == zone_name:
                 return zone
         return None
+
+    def get_zones_by_position(self, x, y):
+        possible_zones = []
+        for zone in self.zones:
+            if zone.is_within_coverage(x, y):
+                possible_zones.append(zone)
+        return possible_zones
+
+    def broadcast_to_zones(self, zones, user_node, task):
+        offers = []
+        for zone in zones:
+            offer = zone.create_offer(user_node, task)
+            if offer:
+                offers.append(offer)
+        return offers

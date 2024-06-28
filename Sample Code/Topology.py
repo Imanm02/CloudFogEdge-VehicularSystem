@@ -1,10 +1,11 @@
 from ZoneManager import *
 
-
 """
     Topology class containing the three layers! The main algorithm should be implemented as a method of 
     this class!
 """
+
+from Node import Node
 
 
 class Topology:
@@ -29,8 +30,17 @@ class Topology:
             if zone.is_within_coverage(fog_node.x, fog_node.y):
                 zone.add_fog_node(fog_node)
 
-    def assign_task(self, user_node, task, zone_broadcast: ZoneBroadcaster):
-        offers = zone_broadcast.broadcast(user_node, task)
+    def assign_task(self, user_node: Node, task, zone_broadcast: ZoneBroadcaster):
+        new_x = user_node.x + user_node.speed * self.TIMESLOT_LENGTH * math.cos(user_node.angle)
+        new_y = user_node.y + user_node.speed * self.TIMESLOT_LENGTH * math.sin(user_node.angle)
+        current_zones = zone_broadcast.get_zones_by_position(user_node.x, user_node.y)
+        predicted_zones = zone_broadcast.get_zones_by_position(new_x, new_y)
+
+        if predicted_zones:
+            target_zones = predicted_zones
+        else:
+            target_zones = current_zones
+        offers = zone_broadcast.broadcast_to_zones(target_zones, user_node, task)
 
         is_successful = False
         while not is_successful and len(offers) > 0:

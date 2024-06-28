@@ -7,7 +7,6 @@ import random
 from Task import Task
 from Clock import Clock
 from Evaluater import Evaluator
-from ZoneManager import ServiceZone
 
 
 class Layer:
@@ -23,6 +22,7 @@ class Node:
         self.cpu_freq = cpu_freq
         self.x = x
         self.y = y
+        self.speed = speed
         self.coverage_radius = coverage_radius
         self.angle = angle
         self.tasks = []
@@ -48,15 +48,8 @@ class Node:
         Evaluator.total_tasks += 1
         return task
 
-    def get_ongoing_tasks(self, current_time):
-        output = []
-        for task in self.tasks:
-            if task.creation_time + task.deadline <= current_time and task.assigned_node == self:
-                output.append(task)
-        return output
-
-    def is_free(self, current_time):
-        return len(self.get_ongoing_tasks(current_time)) == 0
+    def is_free(self, needed_freq):
+        return self.cpu_freq >= needed_freq
 
     def is_in_range(self, x, y):
         return self.distance(Node(-1, Layer.Users, x, y)) <= self.coverage_radius
@@ -77,4 +70,3 @@ class Node:
 
     def remove_task(self, task):
         self.tasks.remove(task)
-

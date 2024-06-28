@@ -2,6 +2,7 @@
     Task class containing max latency, needed frequency and data!
 """
 
+
 def get_needed_freq(cpu_cycles, deadline):
     return cpu_cycles / deadline
 
@@ -26,7 +27,6 @@ class Task:
 
     def set_assignee(self, node):
         self.assigned_node = node
-
 
 # class TaskProfile:
 #     #todo implement
