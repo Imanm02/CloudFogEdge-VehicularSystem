@@ -1,6 +1,6 @@
 import math
 from Node import Node
-
+from Clock import Clock
 
 class ServiceZone:
     def __init__(self, x, y, coverage_radius, name):
@@ -27,6 +27,28 @@ class ServiceZone:
     def add_fog_node(self, fog_node):
         self.fog_nodes.append(fog_node)
 
+    def find_assignee(self, user_node, task):
+        # todo complete the algorithm. its so simple now (greedy)
+        current_time = Clock.time
+        x, y = user_node.x, user_node.y
+
+        min_distance = float('inf')
+        assignee = None
+        for node in self.fog_nodes:
+            if node.cpu_freq >= task.needed_freq and node.is_in_range(x, y) and node.is_free(current_time):
+                distance = node.distance(user_node)
+                if distance < min_distance:
+                    min_distance = distance
+                    assignee = node
+        # if assignee is None:
+        #     assignee = self.cloud_layer.get_nodes()[0] todo move to topology
+        return assignee
+
+    def create_offer(self, node, task):
+        if not self.is_within_coverage(node.x, node.y):
+            return None
+        return self.find_assignee(node, task)
+
 
 class ZoneBroadcaster:
     def __init__(self):
@@ -47,10 +69,10 @@ class ZoneBroadcaster:
         return nearest_zone
 
     def broadcast(self, user, task):
-        nearest_zone: ServiceZone = self.get_nearest_zone(user.x, user.y)
+        offers = []
+        for zone in self.zones:
+            offer = zone.create_offer(user, task)
+            if offer:
+                offers.append(offer)
 
-        if nearest_zone:
-            return nearest_zone
-        else:
-            print(f"No zone available near the position ({user.x}, {user.y})")
-            return None
+        return offers

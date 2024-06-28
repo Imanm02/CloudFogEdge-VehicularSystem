@@ -3,6 +3,7 @@
     info from the sumo xml parser!
 """
 from SumoXMLParser import SumoXMLParser
+from Clock import Clock
 
 
 class MobilityGraph:
@@ -10,25 +11,21 @@ class MobilityGraph:
         self.nodes = []
         self.graph = {}
         self.xml_path = xml_path
-        self.current_time = 0
         self.init_graph()
 
     def init_graph(self):
         parser = SumoXMLParser(filepath=self.xml_path)
         self.graph = parser.parse()
-        self.current_time = min(self.graph.keys())
-        self.nodes = self.graph[self.current_time]
+        Clock.time = min(self.graph.keys())
+        self.nodes = self.graph[Clock.time]
 
     def update_graph(self):
-        self.current_time += 1
-        if self.current_time in self.graph:
-            self.nodes = self.graph[self.current_time]
+        Clock.time += 1
+        if Clock.time in self.graph:
+            self.nodes = self.graph[Clock.time]
         else:
             self.nodes = []
         return self.nodes
 
     def get_nodes(self):
         return self.nodes
-
-    def get_current_time(self):
-        return self.current_time

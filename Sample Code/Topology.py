@@ -2,6 +2,7 @@ from Node import Node
 import Graph
 from ZoneManager import *
 from Node import Layer
+from Clock import Clock
 
 """
     Topology class containing the three layers! The main algorithm should be implemented as a method of 
@@ -23,7 +24,7 @@ class Topology:
 
     def update_topology(self):
         self.graph.update_graph()
-        current_time = self.graph.get_current_time()
+        current_time = Clock.time
         migrations = self.check_migrations(current_time)
         for task in migrations:
             # todo complete it!
@@ -43,24 +44,25 @@ class Topology:
                 zone.add_fog_node(fog_node)
 
     def assign_task(self, user_node, task, zone_broadcast: ZoneBroadcaster):
-        zone: ServiceZone = zone_broadcast.broadcast(user_node, task)
-        assignee = self.find_assignee(user_node, task, zone.fog_nodes)
-        task.set_assignee(assignee)
-        assignee.append_task(task)
+        offers = zone_broadcast.broadcast(user_node, task)
+        # todo
+        # assignee = self.find_assignee(user_node, task, zone.fog_nodes)
+        # task.set_assignee(assignee)
+        # assignee.append_task(task)
 
-    def find_assignee(self, user_node, task, fog_nodes):
-        # todo complete the algorithm. its so simple now (greedy)
-        current_time = self.graph.get_current_time()
-        x, y = user_node.x, user_node.y
-
-        min_distance = float('inf')
-        assignee = None
-        for node in fog_nodes:
-            if node.cpu_freq >= task.needed_freq and node.is_in_range(x, y) and node.is_free(current_time):
-                distance = node.distance(user_node)
-                if distance < min_distance:
-                    min_distance = distance
-                    assignee = node
-        if assignee is None:
-            assignee = self.cloud_layer.get_nodes()[0]
-        return assignee
+    # def find_assignee(self, user_node, task, fog_nodes):
+    #     # todo complete the algorithm. its so simple now (greedy)
+    #     current_time = self.graph.get_current_time()
+    #     x, y = user_node.x, user_node.y
+    #
+    #     min_distance = float('inf')
+    #     assignee = None
+    #     for node in fog_nodes:
+    #         if node.cpu_freq >= task.needed_freq and node.is_in_range(x, y) and node.is_free(current_time):
+    #             distance = node.distance(user_node)
+    #             if distance < min_distance:
+    #                 min_distance = distance
+    #                 assignee = node
+    #     if assignee is None:
+    #         assignee = self.cloud_layer.get_nodes()[0]
+    #     return assignee
