@@ -8,14 +8,15 @@ from Node import Layer
 
 
 class MobilityGraph:
-    def __init__(self, xml_path) -> None:
+    def __init__(self, xml_path, mobile_xml_path) -> None:
         self.nodes = []
         self.graph = {}
         self.xml_path = xml_path
+        self.mobile_xml_path = mobile_xml_path
         self.init_graph()
 
     def init_graph(self):
-        parser = SumoXMLParser(filepath=self.xml_path)
+        parser = SumoXMLParser(file_path=self.xml_path, mobile_file_path=self.mobile_xml_path)
         self.graph = parser.parse()
         Clock.time = min(self.graph.keys())
         self.nodes = self.graph[Clock.time]

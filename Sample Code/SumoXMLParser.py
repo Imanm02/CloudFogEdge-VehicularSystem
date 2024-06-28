@@ -7,14 +7,23 @@ from Config import Config
 
 
 class SumoXMLParser:
-    def __init__(self, filepath):
-        self.filepath = filepath
+    def __init__(self, file_path, mobile_file_path):
+        self.filepath = file_path
+        self.mobileFilepath = mobile_file_path
 
     def parse(self):
         tree = ET.parse(self.filepath)
         root = tree.getroot()
         # vehicles is a mapping from time to a list of vehicles
         vehicles = {}
+        self.getVehicles(root, vehicles)
+
+        tree = ET.parse(self.mobileFilepath)
+        root = tree.getroot()
+        self.getVehicles(root, vehicles)
+        return vehicles
+
+    def getVehicles(self, root, vehicles):
         for timestep in root.findall('timestep'):
             time = float(timestep.get('time'))
             for vehicle in timestep.findall('vehicle'):
@@ -36,6 +45,5 @@ class SumoXMLParser:
                         y=y,
                         speed=speed,
                         angle=angle,
-                        coverage_radius=Config.fog_coverage_radius
+                        coverage_radius=Config.FOG_COVERAGE_RADIUS
                     ))
-        return vehicles

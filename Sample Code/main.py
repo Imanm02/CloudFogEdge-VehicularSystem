@@ -15,20 +15,20 @@ global user_layer, fog_layer, cloud_layer, zone_broadcaster, topology
 
 def init_system():
     global user_layer, fog_layer, cloud_layer, zone_broadcaster, topology
-    graph = MobilityGraph(xml_path="./vehicles_data.xml")
+    graph = MobilityGraph(xml_path="./vehicles_data.xml", mobile_xml_path="./mobileFogNodes_data.xml")
     user_layer = UsersLayer(graph)
     fog_layer = FogLayer(graph)
     cloud_layer = CloudLayer()
     zone_broadcaster = ZoneBroadcaster()
-    for i in range(Config.fog_node_count):
+    for i in range(Config.FOG_NODE_COUNT):
         fog_layer.add_node(
-            Node(i, Layer.Fog, cpu_freq=2, x=i * 10, y=i * 10, coverage_radius=Config.fog_coverage_radius))
-    cloud_layer.add_node(Node(0, Layer.Cloud, cpu_freq=2, x=0, y=0, coverage_radius=Config.cloud_coverage_radius))
+            Node(i, Layer.Fog, cpu_freq=2, x=i * 10, y=i * 10, coverage_radius=Config.FOG_COVERAGE_RADIUS))
+    cloud_layer.add_node(Node(0, Layer.Cloud, cpu_freq=2, x=0, y=0, coverage_radius=Config.CLOUD_COVERAGE_RADIUS))
     topology = Topology(user_layer, fog_layer, cloud_layer, graph)
     zones = []
-    for i in range(Config.zone_count):
+    for i in range(Config.ZONE_COUNT):
         zones.append(
-            ServiceZone(x=i * 100 + 50, y=i * 100 + 50, coverage_radius=Config.zone_coverage_radius, name=f"Zone{i}")
+            ServiceZone(x=i * 100 + 50, y=i * 100 + 50, coverage_radius=Config.ZONE_COVERAGE_RADIUS, name=f"Zone{i}")
         )
     zone_broadcaster.set_zones(zones)
     topology.set_zones(zones)
@@ -60,7 +60,7 @@ def log_current_state():
 
 
 init_system()
-for i in range(Config.simulation_duration):
+for i in range(Config.SIMULATION_DURATION):
     print("Iteration", i)
     step()
 
