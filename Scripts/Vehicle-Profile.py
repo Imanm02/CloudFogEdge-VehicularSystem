@@ -71,7 +71,7 @@ def generate_vehicle_data(num_timesteps, num_vehicles, vehicle_types, filename,
         f.write(pretty_xml_as_string)
 
 
-vehicle_types = ['car', 'bus', 'truck']
+vehicle_types = ['car', 'bus', 'truck', 'moblieFog']
 num_timesteps = 100
 num_vehicles = 100
 filename = 'D:\\vehicles_data.xml'
