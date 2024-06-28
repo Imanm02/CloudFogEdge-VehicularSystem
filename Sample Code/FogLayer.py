@@ -3,6 +3,7 @@
 """
 from Node import Layer
 
+
 class FogLayer:
     def __init__(self) -> None:
         self.nodes = []

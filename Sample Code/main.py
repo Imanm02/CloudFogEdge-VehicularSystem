@@ -4,6 +4,7 @@ from FogLayer import FogLayer
 from CloudLayer import CloudLayer
 from Node import Node, Layer
 from Graph import MobilityGraph
+from ZoneManager import ZoneManager
 
 fog_layer = FogLayer()
 for i in range(5):
@@ -12,17 +13,28 @@ for i in range(5):
 cloud_layer = CloudLayer()
 cloud_layer.add_node(Node(0, Layer.Cloud, cpu_freq=2, x=0, y=0, coverage_radius=50))
 
-graph = MobilityGraph(xml_path="Sample Code/fcd_output.xml")
+graph = MobilityGraph(xml_path="./fcd_output.xml")
 user_layer = UsersLayer(graph)
 
 topology = Topology(user_layer, fog_layer, cloud_layer, graph)
+
+zone_manager = ZoneManager()
+for i in range(5):
+    zone_manager.add_zone(f"Zone{i}", x=i * 20, y=i * 20, coverage_radius=40)
+
+for fog_node in fog_layer.get_nodes():
+    zone_manager.assign_fog_nodes_to_zones(fog_node)
+
+# Print zones and their fog nodes
+for zone in zone_manager.zones:
+    print(f"{zone.name} x:{zone.x} y:{zone.y} coverage_radius:{zone.coverage_radius} covers nodes: {zone.fog_nodes}")
 
 
 def step():
     for node in user_layer.get_nodes():
         time = graph.current_time
         task = node.generate_task(time)
-        topology.assign_task(node, task)
+        zone_manager.assign_task(node, task, topology)
 
     topology.update_topology()
     print("Iteration", i)

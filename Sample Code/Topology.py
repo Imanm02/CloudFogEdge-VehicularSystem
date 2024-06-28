@@ -32,17 +32,16 @@ class Topology:
                     migrations.append(task)
         return migrations
 
-    def assign_task(self, user_node, task):
-        assignee = self.find_assignee(user_node, task)
+    def assign_task(self, user_node, task, fog_nodes):
+
+        assignee = self.find_assignee(user_node, task, fog_nodes)
         task.set_assignee(assignee)
         assignee.append_task(task)
 
-    def find_assignee(self, user_node, task):
+    def find_assignee(self, user_node, task, fog_nodes):
         # todo complete the algorithm. its so simple now (greedy)
         current_time = self.graph.get_current_time()
         x, y = user_node.x, user_node.y
-
-        fog_nodes = self.fog_layer.get_nodes()
 
         min_distance = float('inf')
         assignee = None

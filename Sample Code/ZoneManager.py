@@ -1,8 +1,9 @@
 import math
+from Node import Node
 
 
 class ServiceZone:
-    def __init__(self, x, y, coverage_radius):
+    def __init__(self, x, y, coverage_radius, name):
         """
         x: x-coordinate of the base station
         y: y-coordinate of the base station
@@ -11,6 +12,8 @@ class ServiceZone:
         self.x = x
         self.y = y
         self.coverage_radius = coverage_radius
+        self.name = name
+        self.fog_nodes = []
 
     def is_within_coverage(self, point_x, point_y):
         """
@@ -20,3 +23,37 @@ class ServiceZone:
         """
         distance = math.sqrt((point_x - self.x) ** 2 + (point_y - self.y) ** 2)
         return distance <= self.coverage_radius
+
+    def add_fog_node(self, fog_node):
+        self.fog_nodes.append(fog_node)
+
+
+class ZoneManager:
+    def __init__(self):
+        self.zones = []
+
+    def add_zone(self, name, x, y, coverage_radius):
+        zone = ServiceZone(x, y, coverage_radius, name)
+        self.zones.append(zone)
+
+    def assign_fog_nodes_to_zones(self, fog_node):
+        for zone in self.zones:
+            if zone.is_within_coverage(fog_node.x, fog_node.y):
+                zone.add_fog_node(fog_node)
+
+    def get_nearest_zone(self, x, y):
+        nearest_zone = None
+        min_distance = float('inf')
+        for zone in self.zones:
+            distance = math.sqrt((x - zone.x) ** 2 + (y - zone.y) ** 2)
+            if distance < min_distance:
+                min_distance = distance
+                nearest_zone = zone
+        return nearest_zone
+
+    def assign_task(self, user, task, topology):
+        nearest_zone: ServiceZone = self.get_nearest_zone(user.x, user.y)
+        if nearest_zone:
+            topology.assign_task(user, task, nearest_zone.fog_nodes)
+        else:
+            print(f"No zone available near the position ({user.x}, {user.y})")

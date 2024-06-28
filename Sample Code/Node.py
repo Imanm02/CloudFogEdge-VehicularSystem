@@ -24,6 +24,9 @@ class Node:
         self.angle = angle
         self.tasks = []
 
+    def __repr__(self):
+        return f"Node(id={self.id}, x={self.x}, y={self.y})"
+
     def distance(self, node):
         return math.sqrt((self.x - node.x) ** 2 + (self.y - node.y) ** 2)
 
