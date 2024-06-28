@@ -1,11 +1,11 @@
 import math
+
+from Config import Config
+
 from Clock import Clock
 from Task import Task
 from Evaluater import Evaluator
 from Node import Node
-
-PACKET_COST_PER_METER = 0.0001
-TASK_COST_PER_METER = 0.001
 
 
 class ServiceZone:
@@ -50,7 +50,7 @@ class ServiceZone:
         return assignee
 
     def enough_time(self, task, distance):
-        time = PACKET_COST_PER_METER * distance * 4 + TASK_COST_PER_METER * distance * 2
+        time = Config.PACKET_COST_PER_METER * distance * 4 + Config.TASK_COST_PER_METER * distance * 2
         return task.time_taken < time
 
     def create_offer(self, node, task):

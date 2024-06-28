@@ -1,13 +1,15 @@
 class Config:
-    fog_coverage_radius = 100
-    cloud_coverage_radius = 1000
-    zone_coverage_radius = 200
+    FOG_COVERAGE_RADIUS = 100
+    CLOUD_COVERAGE_RADIUS = 1000
+    ZONE_COVERAGE_RADIUS = 200
 
-    zone_count = 10
-    fog_node_count = 100
-    user_node_count = 100
-    cloud_node_count = 1
+    ZONE_COUNT = 10
+    FOG_NODE_COUNT = 100
+    USER_NODE_COUNT = 100
+    CLOUD_NODE_COUNT = 1
 
-    timeslot_length = 1
-    simulation_duration = 20
-    cpu_freq = 2
+    TIMESLOT_LENGTH = 1
+    SIMULATION_DURATION = 20
+
+    PACKET_COST_PER_METER = 0.0001
+    TASK_COST_PER_METER = 0.001
