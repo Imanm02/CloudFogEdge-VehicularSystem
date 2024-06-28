@@ -14,7 +14,7 @@ class MobilityGraph:
         self.init_graph()
 
     def init_graph(self):
-        parser = SumoXMLParser(filepath="fcd_output.xml")
+        parser = SumoXMLParser(filepath=self.xml_path)
         self.graph = parser.parse()
         self.current_time = min(self.graph.keys())
         self.nodes = self.graph[self.current_time]

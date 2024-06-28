@@ -1,5 +1,6 @@
 import math
 
+
 class ServiceZone:
     def __init__(self, x, y, coverage_radius):
         """
