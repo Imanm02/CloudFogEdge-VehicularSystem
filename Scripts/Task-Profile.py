@@ -2,7 +2,7 @@ import random
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import parseString
 
-def generate_tasks_data(num_seconds, num_tasks, filename, power_range=(10, 100), size_range=(1, 50), deadline_range=(1, 10)):
+def generate_tasks_data(num_seconds, num_tasks, filename, power_range=(1, 10), size_range=(1, 10), deadline_range=(1, 10)):
     root = ET.Element('tasks')
 
     task_id = 1
@@ -30,8 +30,8 @@ def generate_tasks_data(num_seconds, num_tasks, filename, power_range=(10, 100),
         f.write(pretty_xml_as_string)
 
 num_seconds = 100
-num_tasks = 3000
+num_tasks = 300
 filename = 'D:\\tasks_data.xml'
 
-generate_tasks_data(num_seconds, num_tasks, filename, power_range=(10, 100), size_range=(1, 50), deadline_range=(1, 10))
+generate_tasks_data(num_seconds, num_tasks, filename, power_range=(1, 10), size_range=(1, 10), deadline_range=(1, 10))
 print(f"Data successfully saved to {filename}.")
