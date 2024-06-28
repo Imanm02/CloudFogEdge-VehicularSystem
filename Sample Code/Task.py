@@ -18,6 +18,7 @@ class Task:
         self.creator = creator
         self.assigned_node = None
         self.result = None
+        self.time_taken = deadline - creation_time
 
     def set_result(self, result):
         self.result = result

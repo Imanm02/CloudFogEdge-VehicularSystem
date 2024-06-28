@@ -4,6 +4,9 @@ from Task import Task
 from Evaluater import Evaluator
 from Node import Node
 
+PACKET_COST_PER_METER = 0.0001
+TASK_COST_PER_METER = 0.001
+
 
 class ServiceZone:
     def __init__(self, x, y, coverage_radius, name):
@@ -32,7 +35,6 @@ class ServiceZone:
 
     def find_assignee(self, user_node, task):
         # todo complete the algorithm. its so simple now (greedy)
-        current_time = Clock.time
         x, y = user_node.x, user_node.y
 
         min_distance = float('inf')
@@ -40,10 +42,16 @@ class ServiceZone:
         for node in self.fog_nodes:
             if node.cpu_freq >= task.needed_freq and node.is_in_range(x, y) and node.is_free(task.needed_freq):
                 distance = node.distance(user_node)
+                if self.enough_time(task, distance):
+                    continue
                 if distance < min_distance:
                     min_distance = distance
                     assignee = node
         return assignee
+
+    def enough_time(self, task, distance):
+        time = PACKET_COST_PER_METER * distance * 4 + TASK_COST_PER_METER * distance * 2
+        return task.time_taken < time
 
     def create_offer(self, node, task):
         if not self.is_within_coverage(node.x, node.y):
