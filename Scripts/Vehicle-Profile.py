@@ -7,7 +7,6 @@ def random_movement(x, y, speed, angle, movement_range):
     rad = radians(angle)
     new_x = x + speed * cos(rad)
     new_y = y + speed * sin(rad)
-
     new_x = max(min(new_x, movement_range[1]), movement_range[0])
     new_y = max(min(new_y, movement_range[1]), movement_range[0])
     return new_x, new_y
@@ -19,8 +18,14 @@ def update_speed_and_angle(speed, angle, speed_change_range, angle_change_range)
     new_angle = (angle + angle_change) % 360
     return new_speed, new_angle
 
+def update_lane(lane, lane_change_range):
+    lane_change = random.randint(*lane_change_range)
+    new_lane = max(1, min(lane + lane_change, 3))
+    return new_lane
+
 def generate_vehicle_data(num_timesteps, num_vehicles, vehicle_types, filename, 
-                          speed_change_range=(-5, 5), angle_change_range=(-20, 20), movement_range=(-1000, 1000)):
+                          speed_change_range=(-5, 5), angle_change_range=(-20, 20), 
+                          movement_range=(-1000, 1000), lane_change_range=(-1, 1)):
     root = ET.Element('fcd-export')
 
     vehicles = {f"veh{vehicle_id}": {
@@ -54,6 +59,7 @@ def generate_vehicle_data(num_timesteps, num_vehicles, vehicle_types, filename,
                 vehicle_data['x'], vehicle_data['y'], vehicle_data['speed'], vehicle_data['angle'], movement_range
             )
             vehicle_data['pos'] += vehicle_data['speed'] * 0.1
+            vehicle_data['lane'] = update_lane(vehicle_data['lane'], lane_change_range)
 
     rough_string = ET.tostring(root, 'utf-8')
     reparsed = parseString(rough_string)
@@ -68,5 +74,6 @@ num_vehicles = 100
 filename = 'D:\\vehicles_data.xml'
 
 generate_vehicle_data(num_timesteps, num_vehicles, vehicle_types, filename,
-                      speed_change_range=(-5, 5), angle_change_range=(-20, 20), movement_range=(-1000, 1000))
+                      speed_change_range=(-5, 5), angle_change_range=(-20, 20),
+                      movement_range=(-1000, 1000), lane_change_range=(-1, 1))
 print(f"Data successfully saved to {filename}.")
