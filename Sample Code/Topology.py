@@ -18,15 +18,16 @@ class Topology:
 
     def update_topology(self):
         self.graph.update_graph()
-        migrations = self.check_migrations()
+        current_time = self.graph.get_current_time()
+        migrations = self.check_migrations(current_time)
         for task in migrations:
             # todo complete it!
             pass
 
-    def check_migrations(self):
+    def check_migrations(self, current_time):
         migrations = []
         for node in self.fog_layer.get_nodes():
-            for task in node.get_tasks():
+            for task in node.get_ongoing_tasks(current_time):
                 if not node.is_in_range(task.creator.x, task.creator.y):
                     migrations.append(task)
         return migrations
