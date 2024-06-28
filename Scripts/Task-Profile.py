@@ -15,10 +15,9 @@ def generate_tasks_data(num_seconds, num_tasks, num_creators, filename, power_ra
 
     for second in range(num_seconds):
         for _ in range(tasks_per_second[second]):
-            # Find an available creator
             available_creators = [creator for creator, deadlines in active_tasks.items() if not deadlines or min(deadlines) > second]
             if not available_creators:
-                continue  # Skip if no creators are available
+                continue
             creator = random.choice(available_creators)
 
             deadline = second + random.randint(*deadline_range)
@@ -34,7 +33,6 @@ def generate_tasks_data(num_seconds, num_tasks, num_creators, filename, power_ra
             active_tasks[creator].append(deadline)
             task_id += 1
 
-        # Remove completed tasks from the active list
         for creator in active_tasks:
             active_tasks[creator] = [d for d in active_tasks[creator] if d > second]
 

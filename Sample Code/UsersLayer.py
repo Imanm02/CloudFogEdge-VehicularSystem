@@ -3,8 +3,8 @@ from Node import Layer
 """
     Class representing the Users layer!
 """
-from Graph import MobilityGraph
 
+from Graph import MobilityGraph
 
 class UsersLayer:
     def __init__(self, graph) -> None:

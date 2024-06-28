@@ -7,7 +7,6 @@ from ZoneManager import *
 
 from Node import Node
 
-
 class Topology:
     def __init__(self, user_layer, fog_layer, cloud_layer, graph, timeslot_length=1):
         self.user_layer = user_layer
