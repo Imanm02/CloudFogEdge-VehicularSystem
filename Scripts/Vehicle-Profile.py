@@ -3,7 +3,6 @@ import xml.etree.ElementTree as ET
 from xml.dom.minidom import parseString
 from math import cos, sin, radians
 
-
 def random_movement(x, y, speed, angle, movement_range):
     rad = radians(angle)
     new_x = x + speed * cos(rad)
@@ -11,7 +10,6 @@ def random_movement(x, y, speed, angle, movement_range):
     new_x = max(min(new_x, movement_range[1]), movement_range[0])
     new_y = max(min(new_y, movement_range[1]), movement_range[0])
     return new_x, new_y
-
 
 def update_speed_and_angle(speed, angle, speed_change_range, angle_change_range):
     speed_change = random.uniform(*speed_change_range)
