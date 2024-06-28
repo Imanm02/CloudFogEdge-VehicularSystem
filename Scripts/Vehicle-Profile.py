@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 from xml.dom.minidom import parseString
 from math import cos, sin, radians
 
+
 def random_movement(x, y, speed, angle, movement_range):
     rad = radians(angle)
     new_x = x + speed * cos(rad)
@@ -12,6 +13,7 @@ def random_movement(x, y, speed, angle, movement_range):
     new_y = max(min(new_y, movement_range[1]), movement_range[0])
     return new_x, new_y
 
+
 def update_speed_and_angle(speed, angle, speed_change_range, angle_change_range):
     speed_change = random.uniform(*speed_change_range)
     angle_change = random.uniform(*angle_change_range)
@@ -19,7 +21,8 @@ def update_speed_and_angle(speed, angle, speed_change_range, angle_change_range)
     new_angle = (angle + angle_change) % 360
     return new_speed, new_angle
 
-def generate_vehicle_data(num_timesteps, num_vehicles, vehicle_types, filename, 
+
+def generate_vehicle_data(num_timesteps, num_vehicles, vehicle_types, filename,
                           speed_change_range=(-5, 5), angle_change_range=(-20, 20), movement_range=(-1000, 1000)):
     root = ET.Element('fcd-export')
 
@@ -61,6 +64,7 @@ def generate_vehicle_data(num_timesteps, num_vehicles, vehicle_types, filename,
 
     with open(filename, 'w', encoding='utf-8') as f:
         f.write(pretty_xml_as_string)
+
 
 vehicle_types = ['car', 'bus', 'truck']
 num_timesteps = 100

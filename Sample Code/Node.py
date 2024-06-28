@@ -61,7 +61,7 @@ class Node:
     def is_in_range(self, x, y):
         return self.distance(Node(-1, Layer.Users, x, y)) <= self.coverage_radius
 
-    def deliver_finished_task(self, task):
+    def deliver_task_result(self, task):
         task.assigned_node = None
         if Clock.time - task.creation_time <= task.deadline:
             print(f"Task {task.name} is done and delivered on time!")

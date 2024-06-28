@@ -80,6 +80,7 @@ class ServiceZone:
         owner_id = task.creator.id
         owner = topology.get_node(owner_id)
         x, y = owner.x, owner.y
+        owner.deliver_task_result(task)
         print(f"Task {task.name} is sent to owner {owner_id} at ({x}, {y})")
 
 
