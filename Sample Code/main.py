@@ -6,30 +6,33 @@ from Node import Node, Layer
 from Graph import MobilityGraph
 from ZoneManager import ZoneBroadcaster
 from Clock import Clock
+from ZoneManager import ServiceZone
 
-fog_layer = FogLayer()
-for i in range(100):
-    fog_layer.add_node(Node(i, Layer.Fog, cpu_freq=2, x=i * 10, y=i * 10, coverage_radius=100))
+global user_layer, fog_layer, cloud_layer, zone_broadcaster, topology
 
-cloud_layer = CloudLayer()
-cloud_layer.add_node(Node(0, Layer.Cloud, cpu_freq=2, x=0, y=0, coverage_radius=1000))
 
-graph = MobilityGraph(xml_path="./fcd_output.xml")
-user_layer = UsersLayer(graph)
+def init_system():
+    global user_layer, fog_layer, cloud_layer, zone_broadcaster, topology
+    graph = MobilityGraph(xml_path="./fcd_output.xml")
+    user_layer = UsersLayer(graph)
+    fog_layer = FogLayer()
+    cloud_layer = CloudLayer()
+    zone_broadcaster = ZoneBroadcaster()
+    for i in range(100):
+        fog_layer.add_node(Node(i, Layer.Fog, cpu_freq=2, x=i * 10, y=i * 10, coverage_radius=100))
+    cloud_layer.add_node(Node(0, Layer.Cloud, cpu_freq=2, x=0, y=0, coverage_radius=1000))
+    topology = Topology(user_layer, fog_layer, cloud_layer, graph)
+    zones = []
+    for i in range(10):
+        zones.append(ServiceZone(x=i * 100 + 50, y=i * 100 + 50, coverage_radius=200, name=f"Zone{i}"))
+    zone_broadcaster.set_zones(zones)
+    topology.set_zones(zones)
+    for fog_node in fog_layer.get_nodes():
+        topology.assign_fog_nodes_to_zones(fog_node)
 
-topology = Topology(user_layer, fog_layer, cloud_layer, graph)
-
-zone_broadcaster = ZoneBroadcaster()
-for i in range(10):
-    zone_broadcaster.add_zone(f"Zone{i}", x=i * 100 + 50, y=i * 100 + 50, coverage_radius=200)
-topology.set_zones(zone_broadcaster.zones)
-
-for fog_node in fog_layer.get_nodes():
-    topology.assign_fog_nodes_to_zones(fog_node)
-
-# Print zones and their fog nodes
-for zone in zone_broadcaster.zones:
-    print(f"{zone.name} x:{zone.x} y:{zone.y} coverage_radius:{zone.coverage_radius} covers nodes: {zone.fog_nodes}")
+    for zone in zones:
+        print(
+            f"{zone.name} x:{zone.x} y:{zone.y} coverage_radius:{zone.coverage_radius} covers nodes: {zone.fog_nodes}")
 
 
 def step():
@@ -39,7 +42,10 @@ def step():
         topology.assign_task(node, task, zone_broadcaster)
 
     topology.update_topology()
-    print("Iteration", i)
+    log_current_state()
+
+
+def log_current_state():
     for node in fog_layer.get_nodes():
         if len(node.tasks) > 0:
             print("Fog Node", node.id, "Tasks", len(node.tasks))
@@ -49,6 +55,8 @@ def step():
     print()
 
 
+init_system()
 steps = 10
 for i in range(steps):
+    print("Iteration", i)
     step()

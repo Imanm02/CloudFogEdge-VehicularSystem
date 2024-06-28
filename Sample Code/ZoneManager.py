@@ -64,9 +64,8 @@ class ZoneBroadcaster:
     def __init__(self):
         self.zones = []
 
-    def add_zone(self, name, x, y, coverage_radius):
-        zone = ServiceZone(x, y, coverage_radius, name)
-        self.zones.append(zone)
+    def set_zones(self, zones):
+        self.zones = zones
 
     def get_nearest_zone(self, x, y):
         nearest_zone = None
