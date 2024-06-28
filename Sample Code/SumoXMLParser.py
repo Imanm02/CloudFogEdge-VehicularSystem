@@ -26,7 +26,7 @@ class SumoXMLParser:
                 if time not in vehicles:
                     vehicles[time] = []
                 type = vehicle.get('type')
-                if type == 'fog':
+                if type == 'moblieFog':
                     vehicles[time].append(Node.Node(vehicle_id, Node.Layer.Fog, x=x, y=y, speed=speed, angle=angle))
                 else:
                     vehicles[time].append(Node.Node(

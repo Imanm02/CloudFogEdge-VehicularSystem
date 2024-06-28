@@ -15,7 +15,7 @@ global user_layer, fog_layer, cloud_layer, zone_broadcaster, topology
 
 def init_system():
     global user_layer, fog_layer, cloud_layer, zone_broadcaster, topology
-    graph = MobilityGraph(xml_path="./fcd_output.xml")
+    graph = MobilityGraph(xml_path="./vehicles_data.xml")
     user_layer = UsersLayer(graph)
     fog_layer = FogLayer(graph)
     cloud_layer = CloudLayer()
