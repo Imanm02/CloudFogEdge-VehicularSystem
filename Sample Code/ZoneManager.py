@@ -28,18 +28,13 @@ class ServiceZone:
         self.fog_nodes.append(fog_node)
 
 
-class ZoneManager:
+class ZoneBroadcaster:
     def __init__(self):
         self.zones = []
 
     def add_zone(self, name, x, y, coverage_radius):
         zone = ServiceZone(x, y, coverage_radius, name)
         self.zones.append(zone)
-
-    def assign_fog_nodes_to_zones(self, fog_node):
-        for zone in self.zones:
-            if zone.is_within_coverage(fog_node.x, fog_node.y):
-                zone.add_fog_node(fog_node)
 
     def get_nearest_zone(self, x, y):
         nearest_zone = None
@@ -51,9 +46,11 @@ class ZoneManager:
                 nearest_zone = zone
         return nearest_zone
 
-    def assign_task(self, user, task, topology):
+    def broadcast(self, user, task):
         nearest_zone: ServiceZone = self.get_nearest_zone(user.x, user.y)
+
         if nearest_zone:
-            topology.assign_task(user, task, nearest_zone.fog_nodes)
+            return nearest_zone
         else:
             print(f"No zone available near the position ({user.x}, {user.y})")
+            return None

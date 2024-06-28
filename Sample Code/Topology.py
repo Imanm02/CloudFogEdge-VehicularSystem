@@ -1,5 +1,6 @@
 from Node import Node
 import Graph
+from ZoneManager import *
 from Node import Layer
 
 """
@@ -15,6 +16,10 @@ class Topology:
         self.cloud_layer = cloud_layer
         self.graph = graph
         self.TIMESLOT_LENGTH = timeslot_length
+        self.zones = []
+
+    def set_zones(self, zone):
+        self.zones = zone
 
     def update_topology(self):
         self.graph.update_graph()
@@ -32,9 +37,14 @@ class Topology:
                     migrations.append(task)
         return migrations
 
-    def assign_task(self, user_node, task, fog_nodes):
+    def assign_fog_nodes_to_zones(self, fog_node):
+        for zone in self.zones:
+            if zone.is_within_coverage(fog_node.x, fog_node.y):
+                zone.add_fog_node(fog_node)
 
-        assignee = self.find_assignee(user_node, task, fog_nodes)
+    def assign_task(self, user_node, task, zone_broadcast: ZoneBroadcaster):
+        zone: ServiceZone = zone_broadcast.broadcast(user_node, task)
+        assignee = self.find_assignee(user_node, task, zone.fog_nodes)
         task.set_assignee(assignee)
         assignee.append_task(task)
 
