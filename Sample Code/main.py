@@ -7,7 +7,7 @@ from Graph import MobilityGraph
 from ZoneManager import ZoneBroadcaster
 from Clock import Clock
 from ZoneManager import ServiceZone
-from Evaluater import Evaluater
+from Evaluater import Evaluator
 
 global user_layer, fog_layer, cloud_layer, zone_broadcaster, topology
 
@@ -62,4 +62,4 @@ for i in range(steps):
     print("Iteration", i)
     step()
 
-Evaluater.log_evaluation()
+Evaluator.log_evaluation()

@@ -6,6 +6,8 @@ import math
 import random
 from Task import Task
 from Clock import Clock
+from Evaluater import Evaluator
+from ZoneManager import ServiceZone
 
 
 class Layer:
@@ -43,6 +45,7 @@ class Node:
             creator=self,
             creation_time=creation_time
         )
+        Evaluator.total_tasks += 1
         return task
 
     def get_ongoing_tasks(self, current_time):
@@ -57,3 +60,21 @@ class Node:
 
     def is_in_range(self, x, y):
         return self.distance(Node(-1, Layer.Users, x, y)) <= self.coverage_radius
+
+    def deliver_finished_task(self, task):
+        task.assigned_node = None
+        if Clock.time - task.creation_time <= task.deadline:
+            print(f"Task {task.name} is done and delivered on time!")
+        else:
+            print(f"Task {task.name} is done but delivered late!")
+            Evaluator.deadline_misses += 1
+
+    def is_done(self, task):
+        if Clock.time - task.creation_time >= task.deadline:
+            task.set_result("Random Result")
+            return True
+        return False
+
+    def remove_task(self, task):
+        self.tasks.remove(task)
+

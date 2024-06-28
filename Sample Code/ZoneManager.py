@@ -1,6 +1,7 @@
 import math
-from Node import Node
 from Clock import Clock
+from Task import Task
+from Evaluater import Evaluator
 
 
 class ServiceZone:
@@ -59,6 +60,28 @@ class ServiceZone:
             return True
         return False
 
+    def update(self, topology):
+        # todo check if your fog nodes are still in your zone (mobility of fog nodes)
+        for fog_node in self.fog_nodes:
+            for task in fog_node.tasks:
+                if fog_node.is_done(task):
+                    fog_node.remove_task(task)
+                    creator = topology.get_node(task.creator.id)
+                    nearest_zone = topology.get_nearest_zone(creator.x, creator.y)
+                    if nearest_zone == self:
+                        self.send_task_result_to_owner(task, topology)
+                    else:
+                        Evaluator.migrations_count += 1
+                        print(
+                            f"The result of task {task.name} is sent to zone {nearest_zone.name} from zone {self.name}")
+                        nearest_zone.send_task_result_to_owner(task, topology)
+
+    def send_task_result_to_owner(self, task: Task, topology):
+        owner_id = task.creator.id
+        owner = topology.get_node(owner_id)
+        x, y = owner.x, owner.y
+        print(f"Task {task.name} is sent to owner {owner_id} at ({x}, {y})")
+
 
 class ZoneBroadcaster:
     def __init__(self):
@@ -66,16 +89,6 @@ class ZoneBroadcaster:
 
     def set_zones(self, zones):
         self.zones = zones
-
-    def get_nearest_zone(self, x, y):
-        nearest_zone = None
-        min_distance = float('inf')
-        for zone in self.zones:
-            distance = math.sqrt((x - zone.x) ** 2 + (y - zone.y) ** 2)
-            if distance < min_distance:
-                min_distance = distance
-                nearest_zone = zone
-        return nearest_zone
 
     def broadcast(self, user, task):
         offers = []

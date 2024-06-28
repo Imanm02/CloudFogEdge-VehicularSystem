@@ -29,3 +29,9 @@ class MobilityGraph:
 
     def get_nodes(self):
         return self.nodes
+
+    def get_node(self, node_id):
+        for node in self.nodes:
+            if node.id == node_id:
+                return node
+        return None

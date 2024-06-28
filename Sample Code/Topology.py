@@ -1,9 +1,5 @@
-from Node import Node
-import Graph
 from ZoneManager import *
-from Node import Layer
-from Clock import Clock
-from Evaluater import Evaluater
+
 
 """
     Topology class containing the three layers! The main algorithm should be implemented as a method of 
@@ -25,19 +21,9 @@ class Topology:
 
     def update_topology(self):
         self.graph.update_graph()
-        current_time = Clock.time
-        migrations = self.check_migrations(current_time)
-        for migration in migrations:
-            print(f"Migration of task {migration.id} from {migration.creator.id} to {migration.destination.id}")
-            Evaluater.migrations_count += 1
+        for zone_manager in self.zones:
+            zone_manager.update(self)
 
-    def check_migrations(self, current_time):
-        migrations = []
-        for node in self.fog_layer.get_nodes():
-            for task in node.get_ongoing_tasks(current_time):
-                if not node.is_in_range(task.creator.x, task.creator.y):
-                    migrations.append(task)
-        return migrations
 
     def assign_fog_nodes_to_zones(self, fog_node):
         for zone in self.zones:
@@ -66,3 +52,16 @@ class Topology:
         if len(offers) == 0:
             assignee = self.cloud_layer.get_nodes()[0]
             assignee.append_task(task)
+
+    def get_node(self, node_id):
+        return self.graph.get_node(node_id)
+
+    def get_nearest_zone(self, x, y):
+        nearest_zone = None
+        min_distance = float('inf')
+        for zone in self.zones:
+            distance = math.sqrt((x - zone.x) ** 2 + (y - zone.y) ** 2)
+            if distance < min_distance:
+                min_distance = distance
+                nearest_zone = zone
+        return nearest_zone
