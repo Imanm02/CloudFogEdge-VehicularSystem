@@ -36,7 +36,7 @@ class Node:
             cpu_cycles=random.randint(1, 10),
             size=random.randint(1, 10),
             deadline=random.randint(1, 10),
-            owner_node=self.id,
+            creator=self,
             creation_time=creation_time
         )
         return task
