@@ -71,7 +71,7 @@ def generate_fog_node_data(num_timesteps, num_nodes, filename,
         f.write(pretty_xml_as_string)
 
 num_timesteps = 100
-num_nodes = 100
+num_nodes = 2000
 filename = 'D:\\mobileFogNodes_data.xml'
 
 generate_fog_node_data(num_timesteps, num_nodes, filename,
