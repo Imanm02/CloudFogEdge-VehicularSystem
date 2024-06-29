@@ -30,14 +30,15 @@ class Topology:
                     node.remove_task(task)
                     ServiceZone.send_task_result_to_owner(task, self)
 
-    def assign_fog_nodes_to_zones(self, fog_node):
+    def assign_fog_nodes_to_zones(self, fog_node, limit=False):
         assigned_count = 0
         for zone in self.zones:
             if zone.is_within_coverage(fog_node.x, fog_node.y):
                 zone.add_fog_node(fog_node)
                 assigned_count += 1
-                if assigned_count >= 3:
-                    break
+                if limit:
+                    if assigned_count >= 3:
+                        break
 
 
     def assign_task(self, user_node: Node, task, zone_broadcast: ZoneBroadcaster):
@@ -69,7 +70,7 @@ class Topology:
                     min_distance = distance
                     best_zone = zone
             # accept offer
-            if min_distance < cloud_distance:
+            if min_distance < 0.5 * cloud_distance:
                 is_successful = best_zone.accept_offer(user_node, task)
                 if not is_successful:
                     offers.remove((best_zone.name, best_zone.assignee))

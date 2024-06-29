@@ -90,6 +90,8 @@ class ServiceZone:
                     fog_node.remove_task(task)
                     creator = topology.get_node(task.creator.id)
                     nearest_zone = topology.get_nearest_zone(creator.x, creator.y)
+                    if self.is_within_coverage(creator.x, creator.y):
+                        nearest_zone = self
                     if nearest_zone == self:
                         self.send_task_result_to_owner(task, topology)
                     else:
@@ -101,7 +103,7 @@ class ServiceZone:
         for fog_node in self.fog_nodes:
             if not self.is_within_coverage(fog_node.x, fog_node.y):
                 self.fog_nodes.remove(fog_node)
-                topology.assign_fog_nodes_to_zones(fog_node)
+                topology.assign_fog_nodes_to_zones(fog_node, limit=True)
                 # print(f"The moving fog node {fog_node.id} is now out of zone {self.name}")
 
     @staticmethod
