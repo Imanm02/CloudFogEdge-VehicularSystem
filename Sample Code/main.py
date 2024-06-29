@@ -55,9 +55,9 @@ def step():
 
 
 def log_current_state():
-    for node in fog_layer.get_nodes():
-        if len(node.tasks) > 0:
-            print("Fog Node", node.id, "Tasks", len(node.tasks))
+    # for node in fog_layer.get_nodes():
+        # if len(node.tasks) > 0:
+            # print("Fog Node", node.id, "Tasks", len(node.tasks))
     for node in cloud_layer.get_nodes():
         if len(node.tasks) > 0:
             print("Cloud Node", node.id, "Tasks", len(node.tasks))

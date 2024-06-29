@@ -17,7 +17,7 @@ class Layer:
 
 
 class Node:
-    def __init__(self, id, layer, power=Config.FOG_POWER, x=0, y=0, coverage_radius=0, speed=0, angle=-1):
+    def __init__(self, id, layer, power=Config.FOG_POWER, x=0, y=0, coverage_radius=Config.FOG_COVERAGE_RADIUS, speed=0, angle=0):
         self.id = id
         self.layer = layer
         self.power = power
@@ -55,14 +55,14 @@ class Node:
 
     def deliver_task_result(self, task):
         task.assigned_node = None
-        if Clock.time - task.creation_time <= task.deadline:
+        if Clock.time <= task.deadline:
             print(f"Task {task.name} is done and delivered on time!")
         else:
             print(f"Task {task.name} is done but delivered late!")
             Evaluator.deadline_misses += 1
 
     def is_done(self, task):
-        if Clock.time - task.creation_time >= task.deadline:
+        if Clock.time >= task.creation_time + task.exec_time:
             task.set_result("Random Result")
             return True
         return False

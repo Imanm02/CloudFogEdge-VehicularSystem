@@ -50,10 +50,12 @@ class SumoXMLParser:
                             y=y,
                             speed=speed,
                             angle=angle,
-                            coverage_radius=Config.FOG_COVERAGE_RADIUS,
+                            # coverage_radius=Config.FOG_COVERAGE_RADIUS,
                         )
                     if vehicle.get('power'):
                         node.power = float(vehicle.get('power'))
+                    if vehicle.get('coverage_radius'):
+                        node.coverage_radius = float(vehicle.get('coverage_radius'))
                     vehicles[time].append(node)
                 else:
                     vehicles[time].append(Node.Node(
@@ -62,8 +64,7 @@ class SumoXMLParser:
                         x=x,
                         y=y,
                         speed=speed,
-                        angle=angle,
-                        coverage_radius=Config.FOG_COVERAGE_RADIUS
+                        angle=angle
                     ))
 
     def parse_task(self):
@@ -90,15 +91,17 @@ class SumoXMLParser:
         tree = ET.parse(self.fixedFogNodeFilePath)
         root = tree.getroot()
         nodes = []
-        for task in root.findall('node'):
-            id = task.get('id')
-            x = float(task.get('x'))
-            y = float(task.get('y'))
-            type = task.get('type')
-            power = float(task.get('power'))
-            lane = int(task.get('lane'))
-            nodes.append(
-                Node.Node(id, Node.Layer.Fog, power=power, x=x, y=y, coverage_radius=Config.FOG_COVERAGE_RADIUS))
+        for n in root.findall('node'):
+            id = n.get('id')
+            x = float(n.get('x'))
+            y = float(n.get('y'))
+            type = n.get('type')
+            power = float(n.get('power'))
+            lane = int(n.get('lane'))
+            node = Node.Node(id, Node.Layer.Fog, power=power, x=x, y=y, coverage_radius=Config.FOG_COVERAGE_RADIUS)
+            if n.get('coverage_radius'):
+                node.coverage_radius = float(n.get('coverage_radius'))
+            nodes.append(node)
         return nodes
 
     def parse_zone(self):

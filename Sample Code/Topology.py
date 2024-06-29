@@ -36,7 +36,8 @@ class Topology:
             if zone.is_within_coverage(fog_node.x, fog_node.y):
                 zone.add_fog_node(fog_node)
                 assigned_count += 1
-        return
+                if assigned_count >= 3:
+                    break
 
 
     def assign_task(self, user_node: Node, task, zone_broadcast: ZoneBroadcaster):
@@ -54,6 +55,8 @@ class Topology:
             target_zones = current_zones
         offers = zone_broadcast.broadcast_to_zones(target_zones, user_node, task)
 
+        cloud = self.cloud_layer.get_nodes()[0]
+        cloud_distance = cloud.distance(user_node)
         is_successful = False
         while not is_successful and len(offers) > 0:
             min_distance = float('inf')
@@ -66,9 +69,12 @@ class Topology:
                     min_distance = distance
                     best_zone = zone
             # accept offer
-            is_successful = best_zone.accept_offer(user_node, task)
-            if not is_successful:
-                offers.remove((best_zone.name, best_zone.assignee))
+            if min_distance < cloud_distance:
+                is_successful = best_zone.accept_offer(user_node, task)
+                if not is_successful:
+                    offers.remove((best_zone.name, best_zone.assignee))
+            else:
+                break
 
         if len(offers) == 0 and not is_successful:
             cloud = self.cloud_layer.get_nodes()[0]

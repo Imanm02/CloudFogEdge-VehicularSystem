@@ -1,23 +1,23 @@
 <?xml version="1.0" ?>
 <zones>
-  <zone name="Zone0" x="100.00" y="100.00" coverage_radius="200.00"/>
-  <zone name="Zone1" x="300.00" y="100.00" coverage_radius="200.00"/>
-  <zone name="Zone2" x="500.00" y="100.00" coverage_radius="200.00"/>
-  <zone name="Zone3" x="700.00" y="100.00" coverage_radius="200.00"/>
-  <zone name="Zone4" x="900.00" y="100.00" coverage_radius="200.00"/>
-  <zone name="Zone5" x="100.00" y="300.00" coverage_radius="200.00"/>
-  <zone name="Zone6" x="300.00" y="300.00" coverage_radius="200.00"/>
-  <zone name="Zone7" x="500.00" y="300.00" coverage_radius="200.00"/>
-  <zone name="Zone8" x="700.00" y="300.00" coverage_radius="200.00"/>
-  <zone name="Zone9" x="900.00" y="300.00" coverage_radius="200.00"/>
-  <zone name="Zone10" x="100.00" y="500.00" coverage_radius="200.00"/>
-  <zone name="Zone11" x="300.00" y="500.00" coverage_radius="200.00"/>
-  <zone name="Zone12" x="500.00" y="500.00" coverage_radius="200.00"/>
-  <zone name="Zone13" x="700.00" y="500.00" coverage_radius="200.00"/>
-  <zone name="Zone14" x="900.00" y="500.00" coverage_radius="200.00"/>
-  <zone name="Zone15" x="100.00" y="700.00" coverage_radius="200.00"/>
-  <zone name="Zone16" x="300.00" y="700.00" coverage_radius="200.00"/>
-  <zone name="Zone17" x="500.00" y="700.00" coverage_radius="200.00"/>
-  <zone name="Zone18" x="700.00" y="700.00" coverage_radius="200.00"/>
-  <zone name="Zone19" x="900.00" y="700.00" coverage_radius="200.00"/>
+  <zone name="Zone0" x="100.00" y="100.00" coverage_radius="400.00"/>
+  <zone name="Zone1" x="300.00" y="100.00" coverage_radius="400.00"/>
+  <zone name="Zone2" x="500.00" y="100.00" coverage_radius="400.00"/>
+  <zone name="Zone3" x="700.00" y="100.00" coverage_radius="400.00"/>
+  <zone name="Zone4" x="900.00" y="100.00" coverage_radius="400.00"/>
+  <zone name="Zone5" x="100.00" y="300.00" coverage_radius="400.00"/>
+  <zone name="Zone6" x="300.00" y="300.00" coverage_radius="400.00"/>
+  <zone name="Zone7" x="500.00" y="300.00" coverage_radius="400.00"/>
+  <zone name="Zone8" x="700.00" y="300.00" coverage_radius="400.00"/>
+  <zone name="Zone9" x="900.00" y="300.00" coverage_radius="400.00"/>
+  <zone name="Zone10" x="100.00" y="500.00" coverage_radius="400.00"/>
+  <zone name="Zone11" x="300.00" y="500.00" coverage_radius="400.00"/>
+  <zone name="Zone12" x="500.00" y="500.00" coverage_radius="400.00"/>
+  <zone name="Zone13" x="700.00" y="500.00" coverage_radius="400.00"/>
+  <zone name="Zone14" x="900.00" y="500.00" coverage_radius="400.00"/>
+  <zone name="Zone15" x="100.00" y="700.00" coverage_radius="400.00"/>
+  <zone name="Zone16" x="300.00" y="700.00" coverage_radius="400.00"/>
+  <zone name="Zone17" x="500.00" y="700.00" coverage_radius="400.00"/>
+  <zone name="Zone18" x="700.00" y="700.00" coverage_radius="400.00"/>
+  <zone name="Zone19" x="900.00" y="700.00" coverage_radius="400.00"/>
 </zones>
