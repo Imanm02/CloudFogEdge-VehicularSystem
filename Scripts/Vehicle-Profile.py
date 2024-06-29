@@ -25,7 +25,7 @@ def update_lane(lane, lane_change_range):
 
 def generate_vehicle_data(num_timesteps, num_vehicles, vehicle_types, filename,
                           speed_change_range=(-5, 5), angle_change_range=(-20, 20),
-                          movement_range=(-1000, 1000), lane_change_range=(-1, 1)):
+                          movement_range=(0, 1000), lane_change_range=(-1, 1)):
     root = ET.Element('fcd-export')
 
     vehicles = {f"veh{vehicle_id}": {
@@ -76,5 +76,5 @@ filename = 'D:\\vehicles_data.xml'
 
 generate_vehicle_data(num_timesteps, num_vehicles, vehicle_types, filename,
                       speed_change_range=(-5, 5), angle_change_range=(-20, 20),
-                      movement_range=(-1000, 1000), lane_change_range=(-1, 1))
+                      movement_range=(0, 1000), lane_change_range=(-1, 1))
 print(f"Data successfully saved to {filename}.")
