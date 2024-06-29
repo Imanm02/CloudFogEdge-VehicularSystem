@@ -21,14 +21,14 @@ class SumoXMLParser:
         root = tree.getroot()
         # vehicles is a mapping from time to a list of vehicles
         vehicles = {}
-        self.getVehicles(root, vehicles)
+        self.get_vehicles(root, vehicles)
 
         tree = ET.parse(self.mobileFilepath)
         root = tree.getroot()
-        self.getVehicles(root, vehicles)
+        self.get_vehicles(root, vehicles)
         return vehicles
 
-    def getVehicles(self, root, vehicles):
+    def get_vehicles(self, root, vehicles):
         for timestep in root.findall('timestep'):
             time = float(timestep.get('time'))
             for vehicle in timestep.findall('vehicle'):
@@ -40,9 +40,21 @@ class SumoXMLParser:
                 if time not in vehicles:
                     vehicles[time] = []
                 type = vehicle.get('type')
+
                 if type == 'mobileFog':
-                    vehicles[time].append(Node.Node(vehicle_id, Node.Layer.Fog, x=x, y=y, speed=speed, angle=angle,
-                                                    coverage_radius=Config.FOG_COVERAGE_RADIUS))
+                    # vehicles[time].append(
+                    node = Node.Node(
+                            vehicle_id,
+                            Node.Layer.Fog,
+                            x=x,
+                            y=y,
+                            speed=speed,
+                            angle=angle,
+                            coverage_radius=Config.FOG_COVERAGE_RADIUS,
+                        )
+                    if vehicle.get('power'):
+                        node.power = float(vehicle.get('power'))
+                    vehicles[time].append(node)
                 else:
                     vehicles[time].append(Node.Node(
                         id=vehicle_id,
@@ -62,11 +74,11 @@ class SumoXMLParser:
             name = task.get('name')
             creation_time = float(task.get('creation_time'))
             deadline = float(task.get('deadline'))
-            cpu_cycles = float(task.get('power_needed'))
+            power_needed = float(task.get('power_needed'))
             size = float(task.get('size'))
             creator = task.get('creator')
             task_data.append({"name": name,
-                              "cpu_cycles": cpu_cycles,
+                              "power_needed": power_needed,
                               "size": size,
                               "deadline": deadline,
                               "creator": creator,
@@ -86,18 +98,18 @@ class SumoXMLParser:
             power = float(task.get('power'))
             lane = int(task.get('lane'))
             nodes.append(
-                Node.Node(id, Node.Layer.Fog, cpu_freq=power, x=x, y=y, coverage_radius=Config.FOG_COVERAGE_RADIUS))
+                Node.Node(id, Node.Layer.Fog, power=power, x=x, y=y, coverage_radius=Config.FOG_COVERAGE_RADIUS))
         return nodes
 
     def parse_zone(self):
         tree = ET.parse(self.zoneFilePath)
         root = tree.getroot()
         zones = []
-        for task in root.findall('zone'):
-            name = task.get('name')
-            x = float(task.get('x'))
-            y = float(task.get('y'))
-            coverage_radius = float(task.get('coverage_radius'))
+        for z in root.findall('zone'):
+            name = z.get('name')
+            x = float(z.get('x'))
+            y = float(z.get('y'))
+            coverage_radius = float(z.get('coverage_radius'))
             zones.append(
                 ServiceZone(x=x, y=y, coverage_radius=coverage_radius,
                             name=name))
