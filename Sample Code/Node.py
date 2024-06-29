@@ -7,6 +7,7 @@ import random
 from Task import Task
 from Clock import Clock
 from Evaluater import Evaluator
+from Config import Config
 
 
 class Layer:
@@ -16,10 +17,10 @@ class Layer:
 
 
 class Node:
-    def __init__(self, id, layer, cpu_freq=2, x=0, y=0, coverage_radius=0, speed=0, angle=-1):
+    def __init__(self, id, layer, power=Config.FOG_POWER, x=0, y=0, coverage_radius=0, speed=0, angle=-1):
         self.id = id
         self.layer = layer
-        self.cpu_freq = cpu_freq
+        self.power = power
         self.x = x
         self.y = y
         self.speed = speed
@@ -35,11 +36,12 @@ class Node:
 
     def append_task(self, task):
         self.tasks.append(task)
+        self.power -= task.power_needed
 
     def generate_task(self, task_data):
         task = Task(
             name=task_data['name'],
-            cpu_cycles=task_data['cpu_cycles'],
+            power_needed=task_data['power_needed'],
             size=task_data['size'],
             deadline=task_data['deadline'],
             creator=self,
@@ -67,3 +69,4 @@ class Node:
 
     def remove_task(self, task):
         self.tasks.remove(task)
+        self.power += task.power_needed

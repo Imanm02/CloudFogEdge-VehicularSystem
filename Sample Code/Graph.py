@@ -35,8 +35,8 @@ class MobilityGraph:
             if new_node is not None:
                 node.x = new_node.x
                 node.y = new_node.y
-        # self.nodes = new_nodes
-
+                node.angle = new_node.angle
+                node.speed = new_node.speed
         return self.nodes
 
     def get_tasks(self):

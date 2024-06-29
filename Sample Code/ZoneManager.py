@@ -34,24 +34,36 @@ class ServiceZone:
         self.fog_nodes.append(fog_node)
 
     def find_assignee(self, user_node, task):
-        # todo complete the algorithm. its so simple now (greedy)
-        x, y = user_node.x, user_node.y
+        exec_time_estimate = task.exec_time
+        pred_x = user_node.x + user_node.speed * exec_time_estimate * math.cos(user_node.angle)
+        pred_y = user_node.y + user_node.speed * exec_time_estimate * math.sin(user_node.angle)
+        assignee = self.get_assignee_with_position(task, user_node, pred_x, pred_y)
+        if assignee is None:
+            x = user_node.x
+            y = user_node.y
+            assignee = self.get_assignee_with_position(task, user_node, x, y)
 
-        x = user_node.x + user_node.speed * 1 * math.cos(user_node.angle)
-        y = user_node.y + user_node.speed * 1 * math.sin(user_node.angle)
+        return assignee
+
+    def get_assignee_with_position(self, task, user_node, x, y):
         min_distance = float('inf')
         assignee = None
         for node in self.fog_nodes:
-            if node.cpu_freq >= task.needed_freq and node.is_in_range(x, y):
+            if node.power >= task.power_needed and node.is_in_range(x, y):
                 distance = node.distance(user_node)
-                if self.enough_time(task, distance):
+                if self.not_enough_time(task, distance):
                     continue
                 if distance < min_distance:
                     min_distance = distance
                     assignee = node
+            # else:
+                # if not self.not_enough_time(task, node.distance(user_node)):
+                #     pass
+                    # print("Why should this really happen?")
         return assignee
 
-    def enough_time(self, task, distance):
+    @staticmethod
+    def not_enough_time(task, distance):
         time = Config.PACKET_COST_PER_METER * distance * 4 + Config.TASK_COST_PER_METER * distance * 2
         return task.time_taken < time
 
@@ -68,7 +80,6 @@ class ServiceZone:
         assignee: Node = self.find_assignee(user_node, task)
         if assignee is not None:
             assignee.append_task(task)
-            assignee.cpu_freq -= task.needed_freq
             return True
         return False
 
@@ -77,7 +88,7 @@ class ServiceZone:
             for task in fog_node.tasks:
                 if fog_node.is_done(task):
                     fog_node.remove_task(task)
-                    fog_node.cpu_freq += task.needed_freq
+                    # fog_node.power += task.power_needed
                     creator = topology.get_node(task.creator.id)
                     nearest_zone = topology.get_nearest_zone(creator.x, creator.y)
                     if nearest_zone == self:
@@ -94,7 +105,8 @@ class ServiceZone:
                 topology.assign_fog_nodes_to_zones(fog_node)
                 print(f"The moving fog node {fog_node.id} is now out of zone {self.name}")
 
-    def send_task_result_to_owner(self, task: Task, topology):
+    @staticmethod
+    def send_task_result_to_owner(task: Task, topology):
         owner_id = task.creator.id
         owner = topology.get_node(owner_id)
         x, y = owner.x, owner.y
@@ -123,7 +135,6 @@ class ZoneBroadcaster:
         return possible_zones
 
     def broadcast_to_zones(self, zones, user_node, task):
-
         offers = []
         for zone in zones:
             offer = zone.create_offer(user_node, task)

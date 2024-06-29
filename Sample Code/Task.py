@@ -3,18 +3,18 @@
 """
 
 
-def get_needed_freq(cpu_cycles, deadline):
-    return cpu_cycles / deadline
+# def get_needed_freq(cpu_cycles, deadline):
+#     return cpu_cycles / deadline
 
 
 class Task:
-    def __init__(self, cpu_cycles, name, size, deadline, creator, creation_time):
-        self.cpu_cycles = cpu_cycles
+    def __init__(self, power_needed, name, size, deadline, creator, creation_time):
+        self.power_needed = power_needed
         self.name = name
-        self.deadline = deadline
+        self.deadline = deadline * 2
+        self.exec_time = deadline
         self.size = size
         self.creation_time = creation_time
-        self.needed_freq = get_needed_freq(cpu_cycles, deadline)
         self.creator = creator
         self.assigned_node = None
         self.result = None

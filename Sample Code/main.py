@@ -27,7 +27,7 @@ def init_system():
     zone_broadcaster = ZoneBroadcaster()
     for fixed_fog_node in graph.get_fixed_fog_node():
         fog_layer.add_node(fixed_fog_node)
-    cloud_layer.add_node(Node(0, Layer.Cloud, cpu_freq=2, x=0, y=0, coverage_radius=Config.CLOUD_COVERAGE_RADIUS))
+    cloud_layer.add_node(Node(0, Layer.Cloud, power=Config.CLOUD_POWER, x=500, y=500, coverage_radius=Config.CLOUD_COVERAGE_RADIUS))
     topology = Topology(user_layer, fog_layer, cloud_layer, graph)
     zones = []
     for zone in graph.get_zones():
