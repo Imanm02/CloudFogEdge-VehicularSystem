@@ -7,6 +7,7 @@ from ZoneManager import *
 
 from Node import Node
 
+
 class Topology:
     def __init__(self, user_layer, fog_layer, cloud_layer, graph, timeslot_length=1):
         self.user_layer = user_layer
@@ -57,7 +58,7 @@ class Topology:
             if not is_successful:
                 offers.remove((best_zone.name, best_zone.assignee))
 
-        if len(offers) == 0:
+        if len(offers) == 0 and not is_successful:
             assignee = self.cloud_layer.get_nodes()[0]
             assignee.append_task(task)
 
