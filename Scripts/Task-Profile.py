@@ -20,7 +20,7 @@ def generate_tasks_data(num_seconds, num_tasks, num_creators, filename, power_ra
                 continue
             creator = random.choice(available_creators)
 
-            deadline = second + random.randint(*deadline_range)
+            deadline = min(second + random.randint(*deadline_range), num_seconds - 1)
             task_elem = ET.SubElement(root, 'task', {
                 'id': f"task{task_id}",
                 'name': f"Task_{task_id}",
