@@ -37,10 +37,12 @@ class ServiceZone:
         # todo complete the algorithm. its so simple now (greedy)
         x, y = user_node.x, user_node.y
 
+        x = user_node.x + user_node.speed * 1 * math.cos(user_node.angle)
+        y = user_node.y + user_node.speed * 1 * math.sin(user_node.angle)
         min_distance = float('inf')
         assignee = None
         for node in self.fog_nodes:
-            if node.cpu_freq >= task.needed_freq and node.is_in_range(x, y) and node.is_free(task.needed_freq):
+            if node.cpu_freq >= task.needed_freq and node.is_in_range(x, y):
                 distance = node.distance(user_node)
                 if self.enough_time(task, distance):
                     continue
@@ -121,6 +123,7 @@ class ZoneBroadcaster:
         return possible_zones
 
     def broadcast_to_zones(self, zones, user_node, task):
+
         offers = []
         for zone in zones:
             offer = zone.create_offer(user_node, task)

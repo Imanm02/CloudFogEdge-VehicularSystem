@@ -48,11 +48,8 @@ class Node:
         Evaluator.total_tasks += 1
         return task
 
-    def is_free(self, needed_freq):
-        return self.cpu_freq >= needed_freq
-
     def is_in_range(self, x, y):
-        return self.distance(Node(-1, Layer.Users, x, y)) <= self.coverage_radius
+        return math.sqrt((self.x - x) ** 2 + (self.y - y) ** 2) <= self.coverage_radius
 
     def deliver_task_result(self, task):
         task.assigned_node = None

@@ -13,25 +13,25 @@ from Config import Config
 global user_layer, fog_layer, cloud_layer, zone_broadcaster, topology, task_data
 
 
+# graph = MobilityGraph(xml_path="./vehicles_data.xml", mobile_xml_path="./mobileFogNodes_data.xml",
+#                       task_file_path="./tasks_data.xml", fixed_fog_node_file_path="./fixedFogNodes_data.xml")
 def init_system():
     global user_layer, fog_layer, cloud_layer, zone_broadcaster, topology, task_data
-    graph = MobilityGraph(xml_path="Sample Code/vehicles_data.xml", mobile_xml_path="Sample Code/mobileFogNodes_data.xml",
-                          task_file_path="Sample Code/tasks_data.xml")
+    graph = MobilityGraph(xml_path="./vehicles_data.xml", mobile_xml_path="./mobileFogNodes_data.xml",
+                          task_file_path="./tasks_data.xml", fixed_fog_node_file_path="./fixedFogNodes_data.xml",
+                          zone_file_path="./zones_data.xml")
     task_data = graph.get_tasks()
     user_layer = UsersLayer(graph)
     fog_layer = FogLayer(graph)
     cloud_layer = CloudLayer()
     zone_broadcaster = ZoneBroadcaster()
-    for i in range(Config.FOG_NODE_COUNT):
-        fog_layer.add_node(
-            Node(i, Layer.Fog, cpu_freq=2, x=i * 10, y=i * 10, coverage_radius=Config.FOG_COVERAGE_RADIUS))
+    for fixed_fog_node in graph.get_fixed_fog_node():
+        fog_layer.add_node(fixed_fog_node)
     cloud_layer.add_node(Node(0, Layer.Cloud, cpu_freq=2, x=0, y=0, coverage_radius=Config.CLOUD_COVERAGE_RADIUS))
     topology = Topology(user_layer, fog_layer, cloud_layer, graph)
     zones = []
-    for i in range(Config.ZONE_COUNT):
-        zones.append(
-            ServiceZone(x=i * 100 + 50, y=i * 100 + 50, coverage_radius=Config.ZONE_COVERAGE_RADIUS, name=f"Zone{i}")
-        )
+    for zone in graph.get_zones():
+        zones.append(zone)
     zone_broadcaster.set_zones(zones)
     topology.set_zones(zones)
     for fog_node in fog_layer.get_nodes():
@@ -65,7 +65,7 @@ def log_current_state():
 
 
 init_system()
-for i in range(Config.SIMULATION_DURATION):  # تصحیح i به جای I
+for i in range(Config.SIMULATION_DURATION):
     print("Iteration", i)
     step()
 
