@@ -25,7 +25,7 @@ def update_lane(lane, lane_change_range):
 
 def generate_fog_node_data(num_timesteps, num_nodes, filename, 
                            speed_change_range=(-5, 5), angle_change_range=(-20, 20), 
-                           movement_range=(-1000, 1000), lane_change_range=(-1, 1), power_range=(10, 100)):
+                           movement_range=(0, 1000), lane_change_range=(-1, 1), power_range=(10, 100)):
     root = ET.Element('fcd-export')
 
     fog_nodes = {f"fog{node_id}": {
@@ -76,5 +76,5 @@ filename = 'D:\\mobileFogNodes_data.xml'
 
 generate_fog_node_data(num_timesteps, num_nodes, filename,
                        speed_change_range=(-5, 5), angle_change_range=(-20, 20),
-                       movement_range=(-1000, 1000), lane_change_range=(-1, 1), power_range=(10, 100))
+                       movement_range=(0, 1000), lane_change_range=(-1, 1), power_range=(10, 100))
 print(f"Data successfully saved to {filename}.")
