@@ -10,12 +10,14 @@ from ZoneManager import ServiceZone
 from Evaluater import Evaluator
 from Config import Config
 
-global user_layer, fog_layer, cloud_layer, zone_broadcaster, topology
+global user_layer, fog_layer, cloud_layer, zone_broadcaster, topology, task_data
 
 
 def init_system():
-    global user_layer, fog_layer, cloud_layer, zone_broadcaster, topology
-    graph = MobilityGraph(xml_path="./vehicles_data.xml", mobile_xml_path="./mobileFogNodes_data.xml")
+    global user_layer, fog_layer, cloud_layer, zone_broadcaster, topology, task_data
+    graph = MobilityGraph(xml_path="./vehicles_data.xml", mobile_xml_path="./mobileFogNodes_data.xml",
+                          task_file_path="./tasks_data.xml")
+    task_data = graph.get_tasks()
     user_layer = UsersLayer(graph)
     fog_layer = FogLayer(graph)
     cloud_layer = CloudLayer()
@@ -41,9 +43,12 @@ def init_system():
 
 
 def step():
-    for node in user_layer.get_nodes():
-        task = node.generate_task(Clock.time)
-        topology.assign_task(node, task, zone_broadcaster)
+    global task_data
+    for i in task_data:
+        if i["creation_time"] == Clock.time:
+            node: Node = user_layer.get_nodes_by_id(i["creator"])
+            task = node.generate_task(i)
+            topology.assign_task(node, task, zone_broadcaster)
 
     topology.update_topology()
     log_current_state()
@@ -60,7 +65,7 @@ def log_current_state():
 
 
 init_system()
-for i in range(Config.SIMULATION_DURATION):
+for i in range(Config.SIMULATION_DURATION):  # تصحیح i به جای I
     print("Iteration", i)
     step()
 

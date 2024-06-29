@@ -4,12 +4,14 @@
 import xml.etree.ElementTree as ET
 import Node
 from Config import Config
+from Task import Task
 
 
 class SumoXMLParser:
-    def __init__(self, file_path, mobile_file_path):
+    def __init__(self, file_path, mobile_file_path, task_file_path):
         self.filepath = file_path
         self.mobileFilepath = mobile_file_path
+        self.taskFilePath = task_file_path
 
     def parse(self):
         tree = ET.parse(self.filepath)
@@ -47,3 +49,23 @@ class SumoXMLParser:
                         angle=angle,
                         coverage_radius=Config.FOG_COVERAGE_RADIUS
                     ))
+
+    def parse_task(self):
+        tree = ET.parse(self.taskFilePath)
+        root = tree.getroot()
+        task_data = []
+        for task in root.findall('task'):
+            name = task.get('name')
+            creation_time = float(task.get('creation_time'))
+            deadline = float(task.get('deadline'))
+            cpu_cycles = float(task.get('power_needed'))
+            size = float(task.get('size'))
+            creator = task.get('creator')
+            task_data.append({"name": name,
+                              "cpu_cycles": cpu_cycles,
+                              "size": size,
+                              "deadline": deadline,
+                              "creator": creator,
+                              "creation_time": creation_time})
+
+        return task_data

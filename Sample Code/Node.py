@@ -36,14 +36,14 @@ class Node:
     def append_task(self, task):
         self.tasks.append(task)
 
-    def generate_task(self, creation_time):
+    def generate_task(self, task_data):
         task = Task(
-            name="T" + str(random.randint(1, 200)),
-            cpu_cycles=random.randint(1, 10),
-            size=random.randint(1, 10),
-            deadline=random.randint(1, 10),
+            name=task_data['name'],
+            cpu_cycles=task_data['cpu_cycles'],
+            size=task_data['size'],
+            deadline=task_data['deadline'],
             creator=self,
-            creation_time=creation_time
+            creation_time=task_data['creation_time']
         )
         Evaluator.total_tasks += 1
         return task

@@ -8,15 +8,17 @@ from Node import Layer
 
 
 class MobilityGraph:
-    def __init__(self, xml_path, mobile_xml_path) -> None:
+    def __init__(self, xml_path, mobile_xml_path, task_file_path) -> None:
         self.nodes = []
         self.graph = {}
         self.xml_path = xml_path
         self.mobile_xml_path = mobile_xml_path
+        self.task_file_path = task_file_path
         self.init_graph()
 
     def init_graph(self):
-        parser = SumoXMLParser(file_path=self.xml_path, mobile_file_path=self.mobile_xml_path)
+        parser = SumoXMLParser(file_path=self.xml_path, mobile_file_path=self.mobile_xml_path,
+                               task_file_path=self.task_file_path)
         self.graph = parser.parse()
         Clock.time = min(self.graph.keys())
         self.nodes = self.graph[Clock.time]
@@ -34,6 +36,11 @@ class MobilityGraph:
         else:
             self.nodes = []
         return self.nodes
+
+    def get_tasks(self):
+        parser = SumoXMLParser(file_path=self.xml_path, mobile_file_path=self.mobile_xml_path,
+                               task_file_path=self.task_file_path)
+        return parser.parse_task()
 
     def get_user_nodes(self):
         return [node for node in self.nodes if node.layer == Layer.Users]
