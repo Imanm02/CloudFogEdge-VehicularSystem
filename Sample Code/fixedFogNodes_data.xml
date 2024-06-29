@@ -1,15 +1,13 @@
 <?xml version="1.0" ?>
-<fcd-export>
-  <nodes>
-    <node id="fixedFog1" x="365.23" y="580.41" type="fixedFog" power="36.60" lane="5" coverage_radius="190.82"/>
-    <node id="fixedFog2" x="479.88" y="786.57" type="fixedFog" power="87.41" lane="6" coverage_radius="184.39"/>
-    <node id="fixedFog3" x="328.82" y="758.69" type="fixedFog" power="64.59" lane="4" coverage_radius="169.77"/>
-    <node id="fixedFog4" x="859.34" y="87.73" type="fixedFog" power="55.27" lane="4" coverage_radius="159.30"/>
-    <node id="fixedFog5" x="67.04" y="254.94" type="fixedFog" power="74.29" lane="6" coverage_radius="160.70"/>
-    <node id="fixedFog6" x="761.90" y="781.46" type="fixedFog" power="16.51" lane="5" coverage_radius="168.83"/>
-    <node id="fixedFog7" x="127.11" y="103.95" type="fixedFog" power="93.45" lane="6" coverage_radius="177.01"/>
-    <node id="fixedFog8" x="956.71" y="431.33" type="fixedFog" power="89.18" lane="6" coverage_radius="155.60"/>
-    <node id="fixedFog9" x="174.71" y="777.59" type="fixedFog" power="59.19" lane="6" coverage_radius="180.48"/>
-    <node id="fixedFog10" x="306.15" y="33.14" type="fixedFog" power="92.06" lane="5" coverage_radius="197.26"/>
-  </nodes>
-</fcd-export>
+<nodes>
+  <node id="fixedFog1" x="287.55" y="803.29" type="fixedFog" power="28.61" lane="6" coverage_radius="161.96"/>
+  <node id="fixedFog2" x="436.01" y="533.54" type="fixedFog" power="22.17" lane="6" coverage_radius="152.92"/>
+  <node id="fixedFog3" x="803.76" y="353.70" type="fixedFog" power="89.32" lane="4" coverage_radius="171.92"/>
+  <node id="fixedFog4" x="51.84" y="527.58" type="fixedFog" power="40.47" lane="5" coverage_radius="174.10"/>
+  <node id="fixedFog5" x="910.51" y="598.11" type="fixedFog" power="40.21" lane="6" coverage_radius="155.95"/>
+  <node id="fixedFog6" x="933.31" y="553.41" type="fixedFog" power="34.81" lane="5" coverage_radius="196.62"/>
+  <node id="fixedFog7" x="121.63" y="841.31" type="fixedFog" power="18.69" lane="6" coverage_radius="159.64"/>
+  <node id="fixedFog8" x="29.62" y="529.69" type="fixedFog" power="58.26" lane="6" coverage_radius="151.67"/>
+  <node id="fixedFog9" x="965.88" y="147.15" type="fixedFog" power="99.39" lane="5" coverage_radius="194.18"/>
+  <node id="fixedFog10" x="723.78" y="96.97" type="fixedFog" power="85.49" lane="6" coverage_radius="185.71"/>
+</nodes>

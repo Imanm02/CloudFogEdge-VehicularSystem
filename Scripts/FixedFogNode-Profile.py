@@ -3,11 +3,10 @@ import xml.etree.ElementTree as ET
 from xml.dom.minidom import parseString
 
 def generate_fixed_fog_nodes(num_nodes, filename, power_range=(10, 100), position_range=(0, 1000), coverage_range=(150, 200)):
-    root = ET.Element('fcd-export')
-    nodes_elem = ET.SubElement(root, 'nodes')
+    root = ET.Element('nodes')
 
     for node_id in range(1, num_nodes + 1):
-        fog_node_elem = ET.SubElement(nodes_elem, 'node', {
+        fog_node_elem = ET.SubElement(root, 'node', {
             'id': f"fixedFog{node_id}",
             'x': f"{random.uniform(*position_range):.2f}",
             'y': f"{random.uniform(*position_range):.2f}",
