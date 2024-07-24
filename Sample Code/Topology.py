@@ -40,20 +40,9 @@ class Topology:
                     if assigned_count >= 3:
                         break
 
-
     def assign_task(self, user_node: Node, task, zone_broadcast: ZoneBroadcaster):
         exec_time_estimate = task.exec_time
-        new_x = user_node.x + user_node.speed * exec_time_estimate * math.cos(user_node.angle)
-        new_y = user_node.y + user_node.speed * exec_time_estimate * math.sin(user_node.angle)
-
-        current_zones = zone_broadcast.get_zones_by_position(user_node.x, user_node.y)
-        predicted_zones = zone_broadcast.get_zones_by_position(new_x, new_y)
-
-        ideal_zones = set(current_zones).intersection(set(predicted_zones))
-        if ideal_zones:
-            target_zones = ideal_zones
-        else:
-            target_zones = current_zones
+        target_zones = self.get_target_zones(exec_time_estimate, user_node, zone_broadcast)
         offers = zone_broadcast.broadcast_to_zones(target_zones, user_node, task)
 
         cloud = self.cloud_layer.get_nodes()[0]
@@ -88,7 +77,17 @@ class Topology:
             Evaluator.deadline_misses += 1
             print(f"Task {task.name} is missed and not done!")
 
-
+    def get_target_zones(self, exec_time_estimate, user_node, zone_broadcast):
+        new_x = user_node.x + user_node.speed * exec_time_estimate * math.cos(user_node.angle)
+        new_y = user_node.y + user_node.speed * exec_time_estimate * math.sin(user_node.angle)
+        current_zones = zone_broadcast.get_zones_by_position(user_node.x, user_node.y)
+        predicted_zones = zone_broadcast.get_zones_by_position(new_x, new_y)
+        ideal_zones = set(current_zones).intersection(set(predicted_zones))
+        if ideal_zones:
+            target_zones = ideal_zones
+        else:
+            target_zones = current_zones
+        return target_zones
 
     def get_node(self, node_id):
         return self.graph.get_node(node_id)

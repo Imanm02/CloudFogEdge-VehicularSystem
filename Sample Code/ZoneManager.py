@@ -33,10 +33,9 @@ class ServiceZone:
     def add_fog_node(self, fog_node):
         self.fog_nodes.append(fog_node)
 
-    def find_assignee(self, user_node, task):
+    def find_assignee(self, user_node: Node, task: Task):
         exec_time_estimate = task.exec_time
-        pred_x = user_node.x + user_node.speed * exec_time_estimate * math.cos(user_node.angle)
-        pred_y = user_node.y + user_node.speed * exec_time_estimate * math.sin(user_node.angle)
+        pred_x, pred_y = user_node.get_pred_x_y(exec_time_estimate)
         assignee = self.get_assignee_with_position(task, user_node, pred_x, pred_y)
         if assignee is None:
             x = user_node.x
@@ -49,17 +48,15 @@ class ServiceZone:
         min_distance = float('inf')
         assignee = None
         for node in self.fog_nodes:
+            # first bug: "node.is_in_range(x, y)" only considers non-moving fog nodes todo
             if node.power >= task.power_needed and node.is_in_range(x, y):
+                # second bug: we only consider the current distance, what about future distance? todo
                 distance = node.distance(user_node)
                 if self.not_enough_time(task, distance):
                     continue
                 if distance < min_distance:
                     min_distance = distance
                     assignee = node
-            # else:
-                # if not self.not_enough_time(task, node.distance(user_node)):
-                #     pass
-                    # print("Why should this really happen?")
         return assignee
 
     @staticmethod
