@@ -6,7 +6,6 @@ from Node import Layer
 
 from Graph import MobilityGraph
 
-
 class UsersLayer:
     def __init__(self, graph) -> None:
         self.graph = graph

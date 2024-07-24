@@ -19,6 +19,7 @@ class SumoXMLParser:
     def parse(self):
         tree = ET.parse(self.filepath)
         root = tree.getroot()
+
         # vehicles is a mapping from time to a list of vehicles
         vehicles = {}
         self.get_vehicles(root, vehicles)
@@ -42,7 +43,6 @@ class SumoXMLParser:
                 type = vehicle.get('type')
 
                 if type == 'mobileFog':
-                    # vehicles[time].append(
                     node = Node.Node(
                             vehicle_id,
                             Node.Layer.Fog,
@@ -50,7 +50,6 @@ class SumoXMLParser:
                             y=y,
                             speed=speed,
                             angle=angle,
-                            # coverage_radius=Config.FOG_COVERAGE_RADIUS,
                         )
                     if vehicle.get('power'):
                         node.power = float(vehicle.get('power'))

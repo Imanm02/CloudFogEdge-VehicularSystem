@@ -58,7 +58,6 @@ class Topology:
                 if distance < min_distance:
                     min_distance = distance
                     best_zone = zone
-            # accept offer
             if min_distance < 0.5 * cloud_distance:
                 is_successful = best_zone.accept_offer(user_node, task)
                 if not is_successful:
@@ -75,7 +74,6 @@ class Topology:
                     Evaluator.cloud_tasks += 1
                     return
             Evaluator.deadline_misses += 1
-            # todo tell the q learning agent that the task is missed and it should update the reward
             print(f"Task {task.name} is missed and not done!")
 
     def get_target_zones(self, exec_time_estimate, user_node, zone_broadcast):

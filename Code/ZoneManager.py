@@ -36,10 +36,6 @@ class ServiceZone:
         exec_time_estimate = task.exec_time
         pred_x, pred_y = user_node.get_pred_x_y(exec_time_estimate)
 
-        # todo instead of finding the assignee with heuristics, we can ask the q-learner to find the best assignee
-        # we should create the state (consisting of our fog nodes and their info, and the task's info) and ask the q-learner
-        # to find the best action (assignee) for this state
-
         assignee = self.get_assignee_with_position(task, user_node, pred_x, pred_y)
         if assignee is None:
             x = user_node.x
@@ -82,7 +78,8 @@ class ServiceZone:
         if assignee is not None:
             assignee.append_task(task)
             return True
-        return False
+        else:
+            return False
 
     def update(self, topology):
         for fog_node in self.fog_nodes:
@@ -97,7 +94,6 @@ class ServiceZone:
                         self.send_task_result_to_owner(task, topology)
                     else:
                         Evaluator.migrations_count += 1
-                        # todo tell the q learning agent that a migration has happened and it should update the reward
                         print(
                             f"The result of task {task.name} is sent to zone {nearest_zone.name} from zone {self.name}")
                         nearest_zone.send_task_result_to_owner(task, topology)
@@ -106,7 +102,6 @@ class ServiceZone:
             if not self.is_within_coverage(fog_node.x, fog_node.y):
                 self.fog_nodes.remove(fog_node)
                 topology.assign_fog_nodes_to_zones(fog_node, limit=True)
-                # print(f"The moving fog node {fog_node.id} is now out of zone {self.name}")
 
     @staticmethod
     def send_task_result_to_owner(task: Task, topology):
@@ -114,9 +109,7 @@ class ServiceZone:
         owner = topology.get_node(owner_id)
         x, y = owner.x, owner.y
         owner.deliver_task_result(task)
-        # todo tell the q learning agent that the task is done and it should update the reward
         print(f"Task {task.name} is sent to owner {owner_id} at ({x}, {y})")
-
 
 class ZoneBroadcaster:
     def __init__(self):
