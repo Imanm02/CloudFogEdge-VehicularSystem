@@ -70,3 +70,8 @@ class Node:
     def remove_task(self, task):
         self.tasks.remove(task)
         self.power += task.power_needed
+
+    def get_pred_x_y(self, exec_time_estimate):
+        pred_x = self.x + self.speed * exec_time_estimate * math.cos(self.angle)
+        pred_y = self.y + self.speed * exec_time_estimate * math.sin(self.angle)
+        return pred_x, pred_y
