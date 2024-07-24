@@ -75,6 +75,7 @@ class Topology:
                     Evaluator.cloud_tasks += 1
                     return
             Evaluator.deadline_misses += 1
+            # todo tell the q learning agent that the task is missed and it should update the reward
             print(f"Task {task.name} is missed and not done!")
 
     def get_target_zones(self, exec_time_estimate, user_node, zone_broadcast):
