@@ -12,9 +12,8 @@ from Config import Config
 
 global user_layer, fog_layer, cloud_layer, zone_broadcaster, topology, task_data
 
-
-# graph = MobilityGraph(xml_path="./vehicles_data.xml", mobile_xml_path="./mobileFogNodes_data.xml",
-#                       task_file_path="./tasks_data.xml", fixed_fog_node_file_path="./fixedFogNodes_data.xml")
+# graph = MobilityGraph(xml_path="Code/vehicles_data.xml", mobile_xml_path="Code/mobileFogNodes_data.xml",
+#                       task_file_path="Code/tasks_data.xml", fixed_fog_node_file_path="Code/fixedFogNodes_data.xml")
 def init_system():
     global user_layer, fog_layer, cloud_layer, zone_broadcaster, topology, task_data
     graph = MobilityGraph(xml_path="./vehicles_data.xml", mobile_xml_path="./mobileFogNodes_data.xml",
